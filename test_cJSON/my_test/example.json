@@ -1,0 +1,143 @@
+{
+	"points":	[{
+			"block":	"MEASURE",
+			"offset":	0,
+			"name":	"避雷器泄漏电流全电流",
+            "mqtt_title": "total_current",
+			"data_length":	2,
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"sensor_di":	"01000000000001",
+			"sensor_class":	"CurrentValue",
+			"data_type":	"Float"
+		}, {
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"避雷器泄漏电流阻性电流",
+            "mqtt_title": "resistive_current",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"sensor_di":	"01000000000010",
+			"sensor_class":	"CurrentValue",
+			"data_type":	"Float"
+		}, {
+			"block":	"MEASURE",
+			"offset":	8,
+			"name":	"泄漏电流采集相位",
+            "mqtt_title": "elec_collecting_phase",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"sensor_di":	"01000000000011",
+			"sensor_class":	"CurrentValue",
+			"data_type":	"Float"
+		}, {
+			"block":	"MEASURE",
+			"offset":	12,
+			"name":	"避雷器动作次数",
+            "mqtt_title": "arrester_action_total",
+			"data_length":	1,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"sensor_di":	"01000000000100",
+			"sensor_class":	"CurrentValue",
+			"data_type":	"UInt16"
+		}, {
+			"block":	"MEASURE",
+			"offset":	14,
+			"name":	"避雷器阻性电流（ 峰值）",
+            "mqtt_title": "resistive_current_peak",	
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"sensor_di":	"01000000000101",
+			"sensor_class":	"CurrentValue",
+			"data_type":	"Float"
+		}, {
+			"block":	"MEASURE",
+			"offset":	18,
+			"name":	"母线电压采集相位",
+            "mqtt_title": "volt_collecting_phase",
+			"data_length":	2,	
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"sensor_di":	"01000000000110",
+			"sensor_class":	"CurrentValue",
+			"data_type":	"Float"
+		}]
+}

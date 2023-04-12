@@ -1,0 +1,26 @@
+#!/bin/sh
+LD_LIBRARY_PATH=/lib:/usr/lib:/gwapp/lib
+export LD_LIBRARY_PATH
+PATH=$PATH:/gwapp/bin:/gwapp/sh
+export PATH
+
+#load modules
+/gwapp/sh/load_modules.sh
+
+#enable ip forward
+echo 1 >/proc/sys/net/ipv4/ip_forward
+
+#disable ike,device_check.sh will enable it
+/gwapp/sh/enable_ipsec.sh
+
+#for ike
+mkdir -p /var/run
+
+
+#start log server
+export LD_PRELOAD=/gwapp/lib/preloadable_libiconv.so
+/gwapp/bin/plogd
+
+#start random digist pool
+/gwapp/bin/randpool -d
+
