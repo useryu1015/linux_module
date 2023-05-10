@@ -46,15 +46,43 @@ int main(void)
 	MQTTString topicString = MQTTString_initializer;
 	topicString.cstring = "topic1";
 	unsigned char *payload = "hello";
+
+	char payload_buf[512] = {0};
+	char backslash = 92;
+	char *ps = payload_buf;
+
 	while(1)
 	{
 		sleep(2);
-		len = MQTTSerialize_publish(buf, bufsize, 0, 0, 0, 0, topicString, payload, strlen(payload));
+
+		// len = len = sprintf(ps, "\\\"%s\\\":   \\\"%s\\\"      ", "mqtt_title1", "12313");
+		len = len = sprintf(ps, "\x5c\x22%s\":   \\\"%s\\\"      ", "mqtt_title1", "12313");
+
+		// printf("")
+
+		// len = MQTTSerialize_publish(buf, bufsize, 0, 0, 0, 0, topicString, payload, strlen(payload));
+		len = MQTTSerialize_publish(buf, bufsize, 0, 0, 0, 0, topicString, payload_buf, strlen(payload_buf));
+		
 		send(sock, buf, len, 0);
-		printf("message send : %s\n", payload);
+		printf("message send:   %s\n", payload_buf);
+
 	}
 	
 }
+
+
+
+
+// {
+// 	"model_name":	"md66_sf6_density",
+// 	"device_name":	"sf6密度传感器1",
+// 	"create_time":	1682056016,
+// 	"value":	{
+// 		\"mqtt_title1\":	\"123\",
+// 		\"mqtt_title2\":	\"123\",
+// 		\"mqtt_title3\":	\"abc\"
+// 	}
+// }
 
 void TcpConnect(const char *host, int port)
 {
