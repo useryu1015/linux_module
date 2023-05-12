@@ -1,0 +1,284 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <fcntl.h>
+#include <termios.h>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <getopt.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <errno.h>
+
+static int running = true;
+
+static speed_t get_serial_speed(int baud)
+{
+    switch (baud)
+    {
+    case 110:
+        return B110;
+    case 300:
+        return B300;
+    case 600:
+        return B600;
+    case 1200:
+        return B1200;
+    case 2400:
+        return B2400;
+    case 4800:
+        return B4800;
+    case 9600:
+        return B9600;
+    case 19200:
+        return B19200;
+    case 38400:
+        return B38400;
+    case 57600:
+        return B57600;
+    case 115200:
+        return B115200;
+    default:
+        return B9600;
+    }
+}
+
+static int open_serial(char *identifier, int baud, int data_bits, int stop_bits, char parity)
+{
+    int fd;
+    struct termios tios;
+    speed_t speed;
+    char devname[40];
+
+    printf("open_serial identifier:%s baud:%d data_bits:%d stop_bits:%d parity:%c\n", identifier, baud, data_bits, stop_bits, parity);
+
+    sprintf(devname, "%s", identifier);
+    fd = open(devname, O_RDWR | O_NOCTTY | O_NDELAY | O_EXCL);
+    if (fd <= 0)
+    {
+        printf("Can't open the device %s\n", devname);
+        return -1;
+    }
+
+    memset(&tios, 0, sizeof(struct termios));
+
+    /* Set the baud rate */
+    speed = get_serial_speed(baud);
+    if ((cfsetispeed(&tios, speed) < 0) || (cfsetospeed(&tios, speed) < 0))
+    {
+        close(fd);
+        return -1;
+    }
+
+    tios.c_cflag |= (CREAD | CLOCAL);
+    tios.c_cflag &= ~CSIZE;
+    switch (data_bits)
+    {
+    case 5:
+        tios.c_cflag |= CS5;
+        break;
+    case 6:
+        tios.c_cflag |= CS6;
+        break;
+    case 7:
+        tios.c_cflag |= CS7;
+        break;
+    case 8:
+    default:
+        tios.c_cflag |= CS8;
+        break;
+    }
+
+    switch (stop_bits)
+    {
+    case 1:
+        tios.c_cflag &= ~CSTOPB;
+        break;
+    default:
+        tios.c_cflag |= CSTOPB;
+        break;
+    }
+
+    switch (parity)
+    {
+    case 'E':
+        tios.c_cflag |= PARENB;
+        tios.c_cflag &= ~PARODD;
+        break;
+    case 'O':
+        tios.c_cflag |= PARENB;
+        tios.c_cflag |= PARODD;
+        break;
+    case 'N':
+    default:
+        tios.c_cflag &= ~PARENB;
+    }
+
+    // Software flow control is disabled
+    tios.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+
+    // INPCK        Enable parity check
+    switch (parity)
+    {
+    case 'N':
+        tios.c_iflag &= ~INPCK;
+        break;
+    default:
+        tios.c_iflag |= INPCK;
+        break;
+    }
+
+    tios.c_iflag &= ~(IXON | IXOFF | IXANY);
+
+    // OPOST        Postprocess output (not set = raw output)
+    tios.c_oflag &= ~OPOST;
+
+    // VMIN         Minimum number of characters to read
+    tios.c_cc[VMIN] = 0;
+    // VTIME        Time to wait for data (tenths of seconds)
+    tios.c_cc[VTIME] = 0;
+
+    if (tcsetattr(fd, TCSANOW, &tios) < 0)
+    {
+        close(fd);
+        return -1;
+    }
+
+    return fd;
+}
+
+static void printf_array(char *str, uint8_t *buffer, uint32_t sz)
+{
+    uint32_t i = 0;
+
+    if (!buffer)
+        return;
+
+    if (str)
+        fprintf(stdout, "%s", str);
+
+    for (i = 0; i < sz; ++i)
+    {
+        fprintf(stdout, "%02X", buffer[i]);
+    }
+    fprintf(stdout, "\n");
+    fflush(stdout);
+}
+
+static int serial_send(int fd, const void *ptr, int size)
+{
+    int ret;
+    char *ps, *pe;
+    ps = (char *)ptr;
+    pe = (char *)ptr + size;
+    while (pe > ps)
+    {
+        ret = write(fd, ps, pe - ps);
+        if (ret < 0)
+            return -1;
+
+        ps += ret;
+    }
+    printf_array("serial_send:", ptr, (ps - (char *)ptr));
+    return ps - (char *)ptr;
+}
+
+static int serial_recv(int fd, void *ptr, int size)
+{
+    int ret = read(fd, ptr, size);
+    if (ret > 0)
+    {
+        printf_array("serial_recv:", ptr, ret);
+    }
+    return ret;
+}
+
+int str_to_hex(char *hexstr, char *ssal, int *len)
+{
+    int i;
+    char temp[8] = {0};
+    for (i = 0; (i < strlen(hexstr) / 2) && (i < *len); i++)
+    {
+        temp[0] = hexstr[i * 2];
+        temp[1] = hexstr[i * 2 + 1];
+        sscanf(temp, "%02x", &ssal[i]);
+    }
+    *len = i;
+    return 0;
+}
+
+void Usage(char *cmd)
+{
+    printf("\nUsage: %s [OPTION]...\n", cmd);
+    printf("\t-t Device Identifier [default /dev/ttyS0]\n");
+    printf("\t-b Baud int [default 115200]\n");
+    printf("\t-d Data Bits int [default 8]\n");
+    printf("\t-p Parity  char [default N]\n");
+    printf("\t-s Stop Bits int [default 1]\n");
+    printf("\t-h Show this message\n\n");
+    exit(0);
+}
+
+/*信号处理*/
+static void signal_handler(int signo)
+{
+    running = false;
+    return;
+}
+
+int main(int argc, char *argv[])
+{
+    char *ps = NULL, sbuf[2048] = {0}, rbuf[2048] = {0};
+    int slen = sizeof(sbuf);
+    char dev[256] = {"/dev/ttyS0"};
+    int fd, optval, baud = 115200;
+    int data_bits = 8;
+    int stop_bits = 1;
+    char parity = 'N';
+    signal(SIGPIPE, SIG_IGN);
+    signal(SIGINT, signal_handler);  /* ctrl^c */
+    signal(SIGQUIT, signal_handler); /* ctrl^\ */
+    signal(SIGTERM, signal_handler); /* kill/killall */
+
+    while ((optval = getopt(argc, argv, ":t:b:d:p:s:h")) != -1)
+    {
+        switch (optval)
+        {
+        case 't':
+            snprintf(dev, sizeof(dev), "%s", optarg);
+            break;
+        case 'b':
+            sscanf(optarg, "%d", &baud);
+            break;
+        case 'd':
+            sscanf(optarg, "%d", &data_bits);
+            break;
+        case 'p':
+            parity = *optarg;
+            break;
+        case 's':
+            sscanf(optarg, "%d", &stop_bits);
+            break;
+        default:
+            Usage(argv[0]);
+            break;
+        }
+    }
+
+    fd = open_serial(dev, baud, data_bits, stop_bits, parity);
+    if (fd <= 0)
+    {
+        exit(0);
+    }
+    printf("Please Enter Send Hex Str:");
+    // ps = gets(rbuf);
+    // str_to_hex(ps, sbuf, &slen);
+    
+    str_to_hex("2450415241000F5930A92E0000FF0145010140460557", sbuf, &slen);
+    serial_send(fd, sbuf, slen);
+    while (running)
+    {
+        serial_recv(fd, rbuf, sizeof(rbuf));
+    }
+}

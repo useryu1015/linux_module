@@ -1,0 +1,47 @@
+setkey msg len:16
+0x7ffe50d5b9e0: 02 0a 00 00 02 00 00 00 00 00 00 00 04 6b 00 00 
+
+192.168.100.251[4500] 192.168.100.252[4500]
+	esp mode=tunnel spi=29571(0x00007383) reqid=0(0x00000000)
+	E: 127  9086d234 780b898e fab61237 87434578
+	A: hmac-md5  31323334 35363738 39303132 33343536
+	seq=0x00000000 replay=0 flags=0x00000000 state=mature 
+	created: Jun 20 16:59:16 2022	current: Jun 20 17:09:34 2022
+	diff: 618(s)	hard: 3600(s)	soft: 3600(s)
+	last:                     	hard: 0(s)	soft: 0(s)
+	current: 123(bytes)	hard: 0(bytes)	soft: 0(bytes)
+	allocated: 0	hard: 0	soft: 0
+	sadb_seq=1 pid=27396 refcnt=0
+192.168.100.252[4500] 192.168.100.251[4500] 
+	esp mode=tunnel spi=29570(0x00007382) reqid=0(0x00000000)
+	E: 127  9086d234 780b898e fab61237 87434578
+	A: hmac-md5  31323334 35363738 39303132 33343536
+	seq=0x00000000 replay=0 flags=0x00000000 state=mature 
+	created: Jun 20 16:59:16 2022	current: Jun 20 17:09:34 2022
+	diff: 22(s)	hard: 3600(s)	soft: 3600(s)
+	last:                     	hard: 0(s)	soft: 0(s)
+	current: 5(bytes)	hard: 0(bytes)	soft: 0(bytes)
+	allocated: 0	hard: 0	soft: 0
+	sadb_seq=2 pid=27396 refcnt=0
+192.168.100.253 192.168.100.252 
+	esp mode=tunnel spi=29579(0x0000738b) reqid=0(0x00000000)
+	E: 127  9086d234 780b898e fab61237 87434578
+	A: hmac-md5  31323334 35363738 39303132 33343536
+	seq=0x00000000 replay=0 flags=0x00000000 state=mature 
+	created: Jun 20 16:59:16 2022	current: Jun 20 17:09:34 2022
+	diff: 618(s)	hard: 3600(s)	soft: 3600(s)
+	last:                     	hard: 0(s)	soft: 0(s)
+	current: 6(bytes)	hard: 0(bytes)	soft: 0(bytes)
+	allocated: 0	hard: 0	soft: 0
+	sadb_seq=3 pid=27396 refcnt=0
+192.168.100.252 192.168.100.253 
+	esp mode=tunnel spi=29578(0x0000738a) reqid=0(0x00000000)
+	E: 127  9086d234 780b898e fab61237 87434578
+	A: hmac-md5  31323334 35363738 39303132 33343536
+	seq=0x00000000 replay=0 flags=0x00000000 state=mature 
+	created: Jun 20 16:59:16 2022	current: Jun 20 17:09:34 2022
+	diff: 618(s)	hard: 3600(s)	soft: 3600(s)
+	last:                     	hard: 0(s)	soft: 0(s)
+	current: 7(bytes)	hard: 0(bytes)	soft: 0(bytes)
+	allocated: 0	hard: 0	soft: 0
+	sadb_seq=0 pid=27396 refcnt=0
