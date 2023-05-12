@@ -1,0 +1,173 @@
+{
+  "routes": [
+    {
+      "netdev": "ethernet-0",
+      "default": true,
+      "disable": false,
+      "name": "route-0",
+      "id": "route-0",
+      "net": "0.0.0.0",
+      "gateway": "192.168.100.2",
+      "mask": "255.255.255.0"
+    },
+    {
+      "netdev": "ethernet-1",
+      "default": true,
+      "disable": false,
+      "name": "route-1",
+      "id": "route-1",
+      "net": "0.0.0.0",
+      "gateway": "192.168.100.205",
+      "mask": "255.255.255.0"
+    }
+  ],
+  "serials": [
+    {
+      "baud": 19200,
+      "identifier": "ttyS7",
+      "stop_bits": "BITS_1",
+      "data_bits": "DATABITS_8",
+      "parity": "NONE",
+      "disable": false,
+      "name": "RS4851_1",
+      "id": "serial-0",
+      "flow_control": "NONE"
+    },
+    {
+      "baud": 19200,
+      "identifier": "ttyS8",
+      "stop_bits": "BITS_1",
+      "data_bits": "DATABITS_8",
+      "parity": "NONE",
+      "disable": false,
+      "name": "RS4852_2",
+      "id": "serial-1",
+      "flow_control": "NONE"
+    },
+    {
+      "baud": 115200,
+      "identifier": "ttyS9",
+      "stop_bits": "BITS_1",
+      "data_bits": "DATABITS_8",
+      "parity": "NONE",
+      "disable": false,
+      "name": "Tty_LoRa",
+      "id": "serial-2",
+      "flow_control": "NONE"
+    }
+  ],
+  "system": false,
+  "channels": [
+    {
+      "handshake": "Connector",
+      "retries": 1,
+      "protocol": "MD66",
+      "delays": [
+        10,
+        60,
+        300,
+        3600
+      ],
+      "disable": false,
+      "serial_id": "serial-0",
+      "name": "channel-0",
+      "id": "channel-0",
+      "channel_type": "SERIAL",
+      "timeout": 500,
+      "direction": "DownLink"
+    },
+    {
+      "handshake": "Connector",
+      "retries": 3,
+      "protocol": "MD66",
+      "delays": [
+        10,
+        60,
+        300,
+        3600
+      ],
+      "disable": false,
+      "serial_id": "serial-1",
+      "name": "channel-1",
+      "id": "channel-1",
+      "channel_type": "SERIAL",
+      "timeout": 10000,
+      "direction": "DownLink"
+    },
+    {
+      "handshake": "Connector",
+      "retries": 6,
+      "protocol": "SENSOR",
+      "delays": [
+        10,
+        60,
+        300,
+        3600
+      ],
+      "disable": false,
+      "serial_id": "serial-2",
+      "name": "channel-2",
+      "id": "channel-2",
+      "channel_type": "LORA",
+      "timeout": 500,
+      "direction": "DownLink"
+    }
+  ],
+  "devices": [
+    {
+      "sensor_id": "8AC70820000A",
+      "tagid_base": [
+        0,
+        4096,
+        8192,
+        20480,
+        32768
+      ],
+      "type_name": "12184SF6",
+      "disable": false,
+      "name": "电科院测试设备",
+      "id": "device-0",
+      "channel_id": "channel-2"
+    }
+  ],
+  "disable": false,
+  "name": "ied",
+  "service_config": {
+    "lora_2400": 25,
+    "lora_2400ctrl": 10,
+    "lora_470_freq": 10,
+    "iecsrv_port": 102,
+    "lora_2400_freq": 10,
+    "mqtt_clientid": "12345678",
+    "lora_2400ctrl_freq": 10,
+    "mqtt_username": "admin",
+    "mqtt_password": "admin",
+    "lora_470": 25,
+    "modbus_slave": 1
+  },
+  "ID": "020120100001",
+  "ethernets": [
+    {
+      "identifier": "eth1",
+      "routes": "192.168.100.2",
+      "disable": false,
+      "name": "网卡1",
+      "id": "ethernet-0",
+      "local": "192.168.100.211",
+      "gateway": "0.0.0.0",
+      "mac": "77-de-f3-5f-3c-50",
+      "mask": "255.255.255.0"
+    },
+    {
+      "identifier": "eth0",
+      "routes": "192.168.100.205",
+      "disable": false,
+      "name": "2",
+      "id": "ethernet-1",
+      "local": "192.168.100.211",
+      "gateway": "0.0.0.0",
+      "mac": "77-24-61-bf-d7-ef",
+      "mask": "255.255.255.0"
+    }
+  ]
+}

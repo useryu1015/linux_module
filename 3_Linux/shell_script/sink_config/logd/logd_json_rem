@@ -1,0 +1,13 @@
+## <facility> kern, user, mail, daemon, auth, syslog, lpr, news, uucp, cron, authpriv, ftp, ntp, 
+##            audit, alert, clock, local0, local1, local2, local3, local4, local5, local6, local7
+## <severity> emerg(0), alert(1), crit(2), err(3), warning(4), notice(5), info(6), debug(7), none(-1)
+## <maxlines> The maxinum allowed lines
+## <appender> console, database, writer
+## <destaddr> database(tablename), UDP(@), TCP(@@)
+## <template> level date eventid(optional) eventcid(optional) module(optional) errorid(optional)
+##            subject(optional) object(optional) result(optional) message
+##
+## Rsyslogd MUST use this template:
+## template(name="gmsyslog" type="string"
+## string="<%PRI%>%TIMESTAMP:1:10:date-rfc3339% %TIMESTAMP:12:19:date-rfc3339% 
+## %msg:::sp-if-no-1st-sp%%msg:::drop-last-lf%")

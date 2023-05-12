@@ -1,0 +1,117 @@
+{
+	"id":	"devtype-0",
+	"name":	"modbus_device_id",
+	"disable":	false,
+	"system":	false,
+	"type_code":	"MODBUS",
+	"points":	[{
+			"block":	"STATUS",
+			"# block":	"设置分区为block",
+			"offset":	0,
+			"name":	"供应商名称",
+            "mqtt_title": "vendor_name",
+			"data_length":	16,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"DeviceIdentifer",
+			"modbus_offset":	0,
+			"object_id":	0,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"String",
+			"original_min":	0,
+			"original_max":	500000000,
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		}, {
+			"block":	"STATUS",
+			"offset":	16,
+			"name":	"产品编号",
+            "mqtt_title": "product_code",
+			"data_length":	10,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"DeviceIdentifer",
+			"modbus_offset":	1,
+			"object_id":	1,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"String",
+			"original_min":	0,
+			"original_max":	500000000,
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		}, {
+			"block":	"STATUS",
+			"offset":	26,
+			"name":	"修订版本",
+            "mqtt_title": "revision",
+			"data_length":	7,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"DeviceIdentifer",
+			"modbus_offset":	2,
+			"object_id":	2,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"String",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		}]
+}

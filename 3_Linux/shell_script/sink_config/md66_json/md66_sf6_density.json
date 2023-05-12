@@ -1,0 +1,154 @@
+{
+    "id": "devtype-0",
+    "name": "md66_sf6_density",
+    "meter": "SF6密度表",
+    "disable": false,
+    "system": false,
+    "type_code": "MD66",
+    "points": [
+        {
+            "block": "MEASURE",
+            "offset":0,
+            "name": "通讯地址",
+            "mqtt_title": "address",
+            "data_length": 1,
+            "data_type": "UTiny",
+            "meter_oi": "2001"
+        },
+        {
+            "block": "MEASURE",
+            "offset":1,
+            "name": "波特率",
+            "mqtt_title": "baud",
+            "data_length": 1,
+            "data_type": "UTiny",
+            "meter_oi": "2002"
+        },
+        {
+            "block": "MEASURE",
+            "offset":2,
+            "name": "奇偶校验位",
+            "mqtt_title": "check_bit",
+            "data_length": 1,
+            "data_type": "UTiny",
+            "meter_oi": "2003"
+        },
+        {
+            "block": "MEASURE",
+            "offset":3,
+            "name": "日期时间",
+            "mqtt_title": "date_time",
+            "data_length": 4,
+            "data_type": "DataTime",
+            "meter_oi": "2004"
+        },
+        {
+            "block": "MEASURE",
+            "offset":7,
+            "name": "设备型号",
+            "mqtt_title": "device_model",
+            "data_length": 32,
+            "data_type": "String",
+            "meter_oi": "2101"
+        },
+        {
+            "block": "MEASURE",
+            "offset":39,
+            "name": "数字化表计ID",
+            "mqtt_title": "meter_id",
+            "data_length": 3,
+            "data_type": "OcterString",
+            "meter_oi": "2102"
+        },
+        {
+            "block": "MEASURE",
+            "offset":42,
+            "name": "传感器类型标识",
+            "mqtt_title": "type_id",
+            "data_length": 1,
+            "data_type": "UTiny",
+            "meter_oi": "2103"
+        },
+        {
+            "block": "MEASURE",
+            "offset":43,
+            "name": "传感器状态",
+            "mqtt_title": "sensor_state",
+            "data_length": 1,
+            "data_type": "Float",
+            "meter_oi": "2201"
+        },
+        {
+            "block": "MEASURE",
+            "offset":44,
+            "name": "SF6气体密度值(P20)",
+            "mqtt_title": "gas_density",
+            "data_length": 2,
+            "data_type": "Float",
+            "meter_oi": "2202"
+        },
+        {
+            "block": "MEASURE",
+            "offset":46,
+            "name": "温度",
+            "mqtt_title": "temperature",
+            "data_length": 2,
+            "data_type": "Float",
+            "meter_oi": "2203"
+        },
+        {
+            "block": "MEASURE",
+            "offset":48,
+            "name": "相对压力",
+            "mqtt_title": "relative_pressure",
+            "data_length": 2,
+            "data_type": "Float",
+            "meter_oi": "2204"
+        },
+        {
+            "block": "MEASURE",
+            "offset":50,
+            "name": "微水",
+            "mqtt_title": "micro_water",
+            "data_length": 2,
+            "data_type": "Float",
+            "meter_oi": "2205"
+        },
+        {
+            "block": "MEASURE",
+            "offset":52,
+            "name": "密度报警节点阈值",
+            "mqtt_title": "alarm_threshold",
+            "data_length": 2,
+            "data_type": "Float",
+            "meter_oi": "2206"
+        },
+        {
+            "block": "MEASURE",
+            "offset":54,
+            "name": "密度闭锁节点1阈值",
+            "mqtt_title": "shutting_threshold_1",
+            "data_length": 2,
+            "data_type": "Float",
+            "meter_oi": "2207"
+        },
+        {
+            "block": "MEASURE",
+            "offset":56,
+            "name": "密度闭锁节点2阈值",
+            "mqtt_title": "shutting_threshold_2",
+            "data_length": 2,
+            "data_type": "UShort",
+            "meter_oi": "2208"
+        },
+        {
+            "block": "MEASURE",
+            "offset":58,
+            "name": "密度超压节点阈值",
+            "mqtt_title": "overpressure_threshold",
+            "data_length": 2,
+            "data_type": "Float",
+            "meter_oi": "2209"
+        }
+    ]
+}

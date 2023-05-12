@@ -1,0 +1,150 @@
+{
+  "routes": [
+    {
+      "disable": true,
+      "net": "1",
+      "mask": "255.255.255.0",
+      "gateway": "0.0.0.0",
+      "netdev": "eth2",
+      "id": "route-0",
+      "name": "route0",
+      "default": false
+    },
+    {
+      "disable": true,
+      "net": "2",
+      "mask": "255.255.255.0",
+      "gateway": "0.0.0.0",
+      "netdev": "eth2",
+      "id": "route-1",
+      "name": "route1",
+      "default": false
+    },
+    {
+      "netdev": "eth33",
+      "default": true,
+      "disable": true,
+      "name": "route2",
+      "id": "route-2",
+      "net": "0.0.0.0",
+      "gateway": "1.2.3.4",
+      "mask": "255.255.255.0"
+    }
+  ],
+  "serials": [
+    {
+      "id": "serial-0",
+      "name": "Console",
+      "disable": false,
+      "identifier": "ttyS0",
+      "baud": 9600.0,
+      "data_bits": "DATABITS_8",
+      "stop_bits": "BITS_1",
+      "parity": "NONE",
+      "flow_control": "NONE"
+    },
+    {
+      "id": "serial-1",
+      "name": "MD66_Test",
+      "disable": false,
+      "identifier": "ttyS1",
+      "baud": 19200.0,
+      "data_bits": "DATABITS_8",
+      "stop_bits": "BITS_1",
+      "parity": "NONE",
+      "flow_control": "NONE"
+    }
+  ],
+  "system": false,
+  "channels": [
+    {
+      "channel_type": "SERIAL",
+      "name": "RS485_1",
+      "disable": false,
+      "serial_id": "serial-1",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 500,
+      "retries": 1,
+      "id": "channel-1",
+      "delays": [
+        10,
+        60,
+        300,
+        3600
+      ]
+    }
+  ],
+  "devices": [
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 24.0,
+      "channel_id": "RS485_1",
+      "type_name": "md66_sf6_density",
+      "id": "device-0",
+      "tagid_base": [
+        0.0,
+        4096.0,
+        8192.0,
+        20480.0,
+        32768.0
+      ]
+    }
+  ],
+  "disable": false,
+  "name": "test sink gateway",
+  "service_config": {
+    "modbus_slave": 1.0,
+    "mqtt_clientid": "12345678",
+    "mqtt_username": "admin",
+    "mqtt_password": "password",
+    "mqtt_topics": [
+      {
+        "name": "v1/devices/12345678/topo/addResponse",
+        "qos": 1.0
+      },
+      {
+        "name": "v1/devices/12345678/topo/deleteResponse",
+        "qos": 1.0
+      },
+      {
+        "name": "v1/devices/12345678/topo/updateResponse",
+        "qos": 1.0
+      },
+      {
+        "name": "v1/devices/12345678/command",
+        "qos": 1.0
+      }
+    ]
+  },
+  "id": "object-0",
+  "ethernets": [
+    {
+      "id": "ethernet-0",
+      "name": "eth33",
+      "disable": false,
+      "system": false,
+      "local": "192.168.100.205",
+      "mask": "255.255.255.0",
+      "gateway": "0.0.0.0",
+      "mac": "77-de-f3-5f-3c-50",
+      "identifier": "asdf",
+      "routes": "1.2.3.4",
+      "": ""
+    },
+    {
+      "id": "ethernet-1",
+      "name": "eth1",
+      "disable": false,
+      "system": false,
+      "local": "0.0.0.0",
+      "mask": "255.255.255.0",
+      "gateway": "0.0.0.0",
+      "mac": "77-24-61-bf-d7-ef",
+      "identifier": "dfasas",
+      "routes": ""
+    }
+  ]
+}

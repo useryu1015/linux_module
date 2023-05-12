@@ -1,0 +1,199 @@
+{
+	"id":	"devtype-0",
+	"name":	"md66_arrester",
+	"meter":	"避雷器泄露电流表",
+	"disable":	false,
+	"system":	false,
+	"type_code":	"MD66",
+	"points":	[
+        {
+            "block": "MEASURE",
+            "offset":0,
+            "name": "通讯地址",
+            "mqtt_title": "address",
+            "data_length": 1,
+            "data_type": "UTiny",
+            "meter_oi": "2001"
+        },
+        {
+            "block": "MEASURE",
+            "offset":1,
+            "name": "波特率",
+            "mqtt_title": "baud",
+            "data_length": 1,
+            "data_type": "UTiny",
+            "meter_oi": "2002"
+        },
+        {
+            "block": "MEASURE",
+            "offset":2,
+            "name": "奇偶校验位",
+            "mqtt_title": "check_bit",
+            "data_length": 1,
+            "data_type": "UTiny",
+            "meter_oi": "2003"
+        },
+        {
+            "block": "MEASURE",
+            "offset":3,
+            "name": "日期时间",
+            "mqtt_title": "date_time",
+            "data_length": 4,
+            "data_type": "DataTime",
+            "meter_oi": "2004"
+        },
+        {
+            "block": "MEASURE",
+            "offset":7,
+            "name": "设备型号",
+            "mqtt_title": "device_model",
+            "data_length": 32,
+            "data_type": "String",
+            "meter_oi": "2101"
+        },
+        {
+            "block": "MEASURE",
+            "offset":39,
+            "name": "数字化表计ID",
+            "mqtt_title": "meter_id",
+            "data_length": 3,
+            "data_type": "OcterString",
+            "meter_oi": "2102"
+        },
+        {
+            "block": "MEASURE",
+            "offset":42,
+            "name": "传感器类型标识",
+            "mqtt_title": "type_id",
+            "data_length": 1,
+            "data_type": "UTiny",
+            "meter_oi": "2103"
+        },
+		{
+			"block":	"MEASURE",
+			"offset":43,
+			"name":	"传感器状态",
+			"mqtt_title": "sensor_state",
+			"data_length":	1,
+			"data_type":	"OcterString",
+			"meter_oi":	"2301"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":44,
+			"name":	"相位",
+			"mqtt_title": "phase_position",
+			"data_length":	1,
+			"data_type":	"UTiny",
+			"meter_oi":	"2302"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":45,
+			"name":	"系统频率",
+			"mqtt_title": "sys_frequency",
+			"data_length":	2,
+			"data_type":	"Float",
+			"meter_oi":	"2303"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":47,
+			"name":	"全电流",
+			"mqtt_title": "total_current",
+			"data_length":	2,
+			"data_type":	"Float",
+			"meter_oi":	"2304"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":49,
+			"name":	"阻性电流",
+			"mqtt_title": "resistive_current",
+			"data_length":	2,
+			"data_type":	"Float",
+			"meter_oi":	"2305"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":51,
+			"name":	"容性电流",
+			"mqtt_title": "capacitive_current",
+			"data_length":	2,
+			"data_type":	"Float",
+			"meter_oi":	"2306"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":53,
+			"name":	"最后一次落雷时间",
+			"mqtt_title": "last_thunderbolt_time",
+			"data_length":	4,
+			"data_type":	"DataTime",
+			"meter_oi":	"2307"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":57,
+			"name":	"避雷器动作次数",
+			"mqtt_title": "action_times",
+			"data_length":	1,
+			"data_type":	"UShort",
+			"meter_oi":	"2308"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":58,
+			"name":	"系统基波电压有效值",
+			"mqtt_title": "voltage_effective_value",
+			"data_length":	2,
+			"data_type":	"Float",
+			"meter_oi":	"2309"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":60,
+			"name":	"全电流超标阈值",
+			"mqtt_title": "total_current_threshold",
+			"data_length":	2,
+			"data_type":	"Float",
+			"meter_oi":	"230A"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":62,
+			"name":	"阻性电流超标阈值",
+			"mqtt_title": "resistive_current_threshold",
+			"data_length":	2,
+			"data_type":	"Float",
+			"meter_oi":	"230B"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":64,
+			"name":	"容性电流超标阈值",
+			"mqtt_title": "capacitive_current_threshold",
+			"data_length":	2,
+			"data_type":	"Float",
+			"meter_oi":	"230C"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":66,
+			"name":	"雷击次数超标阈值",
+			"mqtt_title": "lightning_stroke_threshold",
+			"data_length":	1,
+			"data_type":	"UShort",
+			"meter_oi":	"230D"
+		}, 
+		{
+			"block":	"MEASURE",
+			"offset":67,
+			"name":	"泄漏电流采集相位",
+			"mqtt_title": "leakage_current",
+			"data_length":	2,
+			"data_type":	"Float",
+			"meter_oi":	"230E"
+		}
+	]
+}

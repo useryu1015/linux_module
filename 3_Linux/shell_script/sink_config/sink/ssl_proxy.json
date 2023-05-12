@@ -1,0 +1,45 @@
+{
+    "version":"1.0.0",
+    "oper_mode":2,
+    "cipher_suit_list":"ECC-SM4-SM3",
+    "server":{
+        "addr1":"192.168.101.241",
+        "port1":14433,
+        "addr2":"192.168.101.241",
+        "port2":14433
+    },
+    "proxy":[ 
+        {
+            "porxy_addr":"192.168.100.241",
+            "proxy_port":5566,
+            "local_addr":"0.0.0.0",
+            "local_port":20000
+        },{
+            "porxy_addr":"192.168.100.135",
+            "proxy_port":5567,
+            "local_addr":"0.0.0.0",
+            "local_port":20001
+        }
+    ],
+    "tunnel":{
+        "name": "tunx1"
+    },
+    "certificate":{
+        "rootca":"/xlian/ssl_proxy/cert/ca.pem",
+        "pkcs12":false,
+        "sgncrt":"/xlian/ssl_proxy/cert/server_sign.pem",
+        "sgnkey":"/xlian/ssl_proxy/cert/server_sign_key.pem",
+        "enccrt":"/xlian/ssl_proxy/cert/server_enc.pem",
+        "enckey":"/xlian/ssl_proxy/cert/server_enc_key.pem"
+    },
+    "terminal":{
+        "TE":"PDA",
+        "DN":"test", 
+        "SN":"123456"
+    },
+    "heartbeat":{
+        "sponsor":true,
+        "keepintvl":10,
+        "keepcount":3	
+    }
+}

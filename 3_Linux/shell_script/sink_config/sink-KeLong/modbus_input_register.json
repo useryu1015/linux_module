@@ -1,0 +1,569 @@
+{
+	"id":	"devtype-0",
+	"name":	"modbus_input_register",
+	"disable":	false,
+	"system":	false,
+	"type_code":	"MODBUS",
+	"points":	[{
+			"block":	"MEASURE",
+			"offset":	0,
+			"name":	"液体流速",
+            "mqtt_title": "flow_speed",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	0,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	2,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},  {
+			"block":	"MEASURE",
+			"offset":	8,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow 4 ",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	4,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	6,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	8,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	10,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	12,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	14,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	16,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	18,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Float",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "double_data",
+			"data_length":	4,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	20,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Double",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "double_data",
+			"data_length":	4,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	24,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Double",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "double_data3",
+			"data_length":	4,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	28,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"Double",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	32,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"UInt32",
+			"data_type word ":	"byte[4]",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	34,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"UInt32",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		},	{
+			"block":	"MEASURE",
+			"offset":	4,
+			"name":	"容积流量",
+            "mqtt_title": "volume_flow",
+			"data_length":	2,
+			"read_period":	{
+				"initial_delay":	{
+					"value":	0,
+					"time_unit":	"SECONDS"
+				},
+				"cycle":	{
+					"value":	10,
+					"time_unit":	"SECONDS"
+				}
+			},
+			"freeze_interval":	{
+				"value":	60,
+				"time_unit":	"SECONDS"
+			},
+			"abs_dead_band":	0.100000,
+			"rel_dead_band":	0.100000,
+			"modbus_range":	"InputRegister",
+			"modbus_offset":	36,
+			"contiguous_start":	false,
+			"write_only":	false,
+			"follow":	false,
+			"follow_up":	false,
+			"highest_sign": false,
+			"data_type":	"UInt32",
+			"original_min":	0,
+			"original_max":	500000000,		
+			"range_min":	0,
+			"range_max":	500000000,
+			"exceptval":	-1
+		}]
+}

@@ -1,0 +1,50 @@
+{
+	"dbtype": "mysql",
+	"host":	"127.0.0.1",
+	"user":	"root",
+	"passwd":	"isiem1234!",
+	"dbname":	"log",
+	"port":	3306,
+	"conf_sqlite":{
+		"dbPath": "/log/log.db",
+		"dbEncrypt": false,
+		"dbPinPath": "/log/log.key"
+	},
+	"dbConfigs": [{
+			"facility": "local0",
+			"disable":	false,
+			"level": "info",
+			"maxrec": 2000,
+			"appender": ["database"],
+			"destaddr": ["sys_log"],
+			"template": ["level", "date", "eventid", "eventcid", "module", "errorid", "subject", "message"]
+		},
+		{
+			"facility": "local1",
+			"disable":	false,
+			"level": "info",
+			"maxrec": 2000,
+			"appender": ["database"],
+			"destaddr": ["opr_log"],
+			"template": ["level", "date", "eventid", "eventcid", "module", "errorid", "subject", "object", "result", "message"]
+		},
+		{
+			"facility": "local2",
+			"disable":	false,
+			"level": "info",
+			"maxrec": 2000,
+			"appender": ["database"],
+			"destaddr": ["com_log"],
+			"template": ["level", "date", "eventid", "eventcid", "module", "errorid", "subject", "object", "message"]
+		},
+		{
+			"facility": "local3",
+			"disable":	false,
+			"level": "warning",
+			"maxrec": 2000,
+			"appender": ["database", "writer"],
+			"destaddr": ["i6000", "@192.168.1.1:514"],
+			"template": ["level", "date", "eventid", "eventcid", "module", "errorid", "subject", "message"]
+		}
+	]
+}

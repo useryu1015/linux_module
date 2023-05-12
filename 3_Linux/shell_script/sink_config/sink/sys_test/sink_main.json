@@ -1,0 +1,960 @@
+{
+  "routes": [
+    {
+      "disable": true,
+      "net": "1",
+      "mask": "255.255.255.0",
+      "gateway": "0.0.0.0",
+      "netdev": "eth2",
+      "id": "route-0",
+      "name": "route0",
+      "default": false
+    }
+  ],
+  "serials": [
+    {
+      "id": "serial-0",
+      "name": "Console",
+      "disable": false,
+      "identifier": "ttyS0",
+      "baud": 9600.0,
+      "data_bits": "DATABITS_8",
+      "stop_bits": "BITS_1",
+      "parity": "NONE",
+      "flow_control": "NONE"
+    },
+    {
+      "id": "serial-1",
+      "name": "MD66_Test",
+      "disable": false,
+      "identifier": "tty-S1",
+      "baud": 19200.0,
+      "data_bits": "DATABITS_8",
+      "stop_bits": "BITS_1",
+      "parity": "NONE",
+      "flow_control": "NONE"
+    }
+  ],
+  "system": false,
+  "channels": [
+    {
+      "channel_type": "SERIAL",
+      "name": "RS485_1",
+      "disable": false,
+      "serial_id": "serial-1",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 500.0,
+      "retries": 1.0,
+      "id": "channel-1",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "channel_type": "SERIAL",
+      "name": "RS485_2",
+      "disable": false,
+      "serial_id": "serial-1",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 500.0,
+      "retries": 1.0,
+      "id": "channel-2",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "channel_type": "SERIAL",
+      "name": "RS485_3",
+      "disable": false,
+      "serial_id": "serial-1",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 500.0,
+      "retries": 1.0,
+      "id": "channel-3",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-512",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 512.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-6",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5210",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5210.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-7",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5211",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5211.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-8",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5212",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5212.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-9",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5213",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5213.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-10",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5214",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5214.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-11",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5215",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5215.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-12",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5216",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5216.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-13",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5217",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5217.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-14",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5218",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5218.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-15",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    },
+    {
+      "name": "ch_test-5219",
+      "disable": false,
+      "hostname": "192.168.101.33",
+      "port": 5219.0,
+      "channel_type": "TCP",
+      "protocol": "MD66",
+      "direction": "DownLink",
+      "handshake": "Connector",
+      "timeout": 1000.0,
+      "retries": 1.0,
+      "id": "channel-16",
+      "delays": [
+        10.0,
+        60.0,
+        300.0,
+        3600.0
+      ]
+    }
+  ],
+  "devices": [
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 24,
+      "channel_id": "RS485_1",
+      "type_name": "md66_device_id",
+      "id": "device-0",
+      "tagid_base": [
+        0,
+        4096,
+        8192,
+        20480,
+        32768
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 25,
+      "channel_id": "null  预留",
+      "type_name": "",
+      "id": "device-1",
+      "tagid_base": [
+        64,
+        4160,
+        8320,
+        20608,
+        32800
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 10,
+      "channel_id": "ch_test-5210",
+      "type_name": "md66_communicate",
+      "id": "device-2",
+      "tagid_base": [
+        128,
+        4224,
+        8448,
+        20736,
+        32832
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 11,
+      "channel_id": "ch_test-5211",
+      "type_name": "md66_communicate",
+      "id": "device-3",
+      "tagid_base": [
+        192,
+        4288,
+        8576,
+        20864,
+        32864
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 12,
+      "channel_id": "ch_test-5212",
+      "type_name": "md66_communicate",
+      "id": "device-4",
+      "tagid_base": [
+        256,
+        4352,
+        8704,
+        20992,
+        32896
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 13,
+      "channel_id": "ch_test-5213",
+      "type_name": "md66_communicate",
+      "id": "device-5",
+      "tagid_base": [
+        320,
+        4416,
+        8832,
+        21120,
+        32928
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 14,
+      "channel_id": "ch_test-5214",
+      "type_name": "md66_communicate",
+      "id": "device-6",
+      "tagid_base": [
+        384,
+        4480,
+        8960,
+        21248,
+        32960
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 15,
+      "channel_id": "ch_test-5215",
+      "type_name": "md66_communicate",
+      "id": "device-7",
+      "tagid_base": [
+        448,
+        4544,
+        9088,
+        21376,
+        32992
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 16,
+      "channel_id": "ch_test-5216",
+      "type_name": "md66_communicate",
+      "id": "device-8",
+      "tagid_base": [
+        512,
+        4608,
+        9216,
+        21504,
+        33024
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 17,
+      "channel_id": "ch_test-5217",
+      "type_name": "md66_communicate",
+      "id": "device-9",
+      "tagid_base": [
+        576,
+        4672,
+        9344,
+        21632,
+        33056
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 18,
+      "channel_id": "ch_test-5218",
+      "type_name": "md66_communicate",
+      "id": "device-10",
+      "tagid_base": [
+        640,
+        4736,
+        9472,
+        21760,
+        33088
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 19,
+      "channel_id": "ch_test-5219",
+      "type_name": "md66_communicate",
+      "id": "device-11",
+      "tagid_base": [
+        704,
+        4800,
+        9600,
+        21888,
+        33120
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 80,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-12",
+      "tagid_base": [
+        768,
+        4864,
+        9728,
+        22016,
+        33152
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 81,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-13",
+      "tagid_base": [
+        832,
+        4928,
+        9856,
+        22144,
+        33184
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 82,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-14",
+      "tagid_base": [
+        896,
+        4992,
+        9984,
+        22272,
+        33216
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 83,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-15",
+      "tagid_base": [
+        960,
+        5056,
+        10112,
+        22400,
+        33248
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 84,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-16",
+      "tagid_base": [
+        1024,
+        5120,
+        10240,
+        22528,
+        33280
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 85,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-17",
+      "tagid_base": [
+        1088,
+        5184,
+        10368,
+        22656,
+        33312
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 86,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-18",
+      "tagid_base": [
+        1152,
+        5248,
+        10496,
+        22784,
+        33344
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 87,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-19",
+      "tagid_base": [
+        1216,
+        5312,
+        10624,
+        22912,
+        33376
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 88,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-20",
+      "tagid_base": [
+        1280,
+        5376,
+        10752,
+        23040,
+        33408
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 89,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-21",
+      "tagid_base": [
+        1344,
+        5440,
+        10880,
+        23168,
+        33440
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 90,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-22",
+      "tagid_base": [
+        1408,
+        5504,
+        11008,
+        23296,
+        33472
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 91,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-23",
+      "tagid_base": [
+        1472,
+        5568,
+        11136,
+        23424,
+        33504
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 92,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-24",
+      "tagid_base": [
+        1536,
+        5632,
+        11264,
+        23552,
+        33536
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 93,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-25",
+      "tagid_base": [
+        1600,
+        5696,
+        11392,
+        23680,
+        33568
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 94,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-26",
+      "tagid_base": [
+        1664,
+        5760,
+        11520,
+        23808,
+        33600
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 95,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-27",
+      "tagid_base": [
+        1728,
+        5824,
+        11648,
+        23936,
+        33632
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 96,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-28",
+      "tagid_base": [
+        1792,
+        5888,
+        11776,
+        24064,
+        33664
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 97,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-29",
+      "tagid_base": [
+        1856,
+        5952,
+        11904,
+        24192,
+        33696
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 98,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-30",
+      "tagid_base": [
+        1920,
+        6016,
+        12032,
+        24320,
+        33728
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 99,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-31",
+      "tagid_base": [
+        1984,
+        6080,
+        12160,
+        24448,
+        33760
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 100,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-32",
+      "tagid_base": [
+        2048,
+        6144,
+        12288,
+        24576,
+        33792
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 101,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-33",
+      "tagid_base": [
+        2112,
+        6208,
+        12416,
+        24704,
+        33824
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 102,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-34",
+      "tagid_base": [
+        2176,
+        6272,
+        12544,
+        24832,
+        33856
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 103,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-35",
+      "tagid_base": [
+        2240,
+        6336,
+        12672,
+        24960,
+        33888
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 104,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-36",
+      "tagid_base": [
+        2304,
+        6400,
+        12800,
+        25088,
+        33920
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 105,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-37",
+      "tagid_base": [
+        2368,
+        6464,
+        12928,
+        25216,
+        33952
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 106,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-38",
+      "tagid_base": [
+        2432,
+        6528,
+        13056,
+        25344,
+        33984
+      ]
+    },
+    {
+      "name": "SF6数字化密度表计",
+      "disable": true,
+      "slave_id": 107,
+      "channel_id": "ch_test-512",
+      "type_name": "md66_sf6_density",
+      "id": "device-39",
+      "tagid_base": [
+        2496,
+        6592,
+        13184,
+        25472,
+        34016
+      ]
+    }
+  ],
+  "disable": false,
+  "name": "test sink gateway",
+  "service_config": {
+    "modbus_slave": 1.0,
+    "mqtt_clientid": "12345678",
+    "mqtt_username": "admin",
+    "mqtt_password": "password",
+    "mqtt_topics": [
+      {
+        "name": "v1/devices/12345678/topo/addResponse",
+        "qos": 1.0
+      },
+      {
+        "name": "v1/devices/12345678/topo/deleteResponse",
+        "qos": 1.0
+      },
+      {
+        "name": "v1/devices/12345678/topo/updateResponse",
+        "qos": 1.0
+      },
+      {
+        "name": "v1/devices/12345678/command",
+        "qos": 1.0
+      }
+    ]
+  },
+  "id": "object-0",
+  "ethernets": [
+    {
+      "id": "ethernet-0",
+      "name": "eth33",
+      "disable": false,
+      "system": false,
+      "local": "192.168.100.205",
+      "mask": "255.255.255.0",
+      "gateway": "0.0.0.0",
+      "mac": "77-de-f3-5f-3c-50",
+      "identifier": "asdf",
+      "routes": "1.2.3.4",
+      "": ""
+    },
+    {
+      "id": "ethernet-1",
+      "name": "eth1",
+      "disable": false,
+      "system": false,
+      "local": "0.0.0.0",
+      "mask": "255.255.255.0",
+      "gateway": "0.0.0.0",
+      "mac": "77-24-61-bf-d7-ef",
+      "identifier": "dfasas",
+      "routes": ""
+    }
+  ]
+}
