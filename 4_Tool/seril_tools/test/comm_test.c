@@ -10,6 +10,7 @@
 #include <signal.h>
 #include <stdbool.h>
 #include <errno.h>
+#include <time.h>
 
 static int running = true;
 
@@ -51,11 +52,13 @@ static int open_serial(char *identifier, int baud, int data_bits, int stop_bits,
     speed_t speed;
     char devname[40];
 
+    printf("open_serial identifier:%s baud:%d data_bits:%d stop_bits:%d parity:%c\n", identifier, baud, data_bits, stop_bits, parity);
+
     sprintf(devname, "%s", identifier);
     fd = open(devname, O_RDWR | O_NOCTTY | O_NDELAY | O_EXCL);
-    if (-1 == fd)
+    if (fd <= 0)
     {
-        printf("Can't open the device %s (%s)", devname, strerror(errno));
+        printf("Can't open the device %s\n", devname);
         return -1;
     }
 
@@ -160,7 +163,25 @@ static void printf_array(char *str, uint8_t *buffer, uint32_t sz)
     {
         fprintf(stdout, "%02X", buffer[i]);
     }
-    fprintf(stdout, "\n");
+    // fprintf(stdout, "\n");
+    fflush(stdout);
+}
+
+static void printf_hex(char *str, uint8_t *buffer, uint32_t sz)
+{
+    uint32_t i = 0;
+
+    if (!buffer)
+        return;
+
+    if (str)
+        fprintf(stdout, "%s", str);
+
+    for (i = 0; i < sz; ++i)
+    {
+        fprintf(stdout, "%02X", buffer[i]);
+    }
+    // fprintf(stdout, "\n");
     fflush(stdout);
 }
 
@@ -184,11 +205,27 @@ static int serial_send(int fd, const void *ptr, int size)
 
 static int serial_recv(int fd, void *ptr, int size)
 {
+    time_t t;
+
     int ret = read(fd, ptr, size);
     if (ret > 0)
     {
-        printf_array("serial_recv:", ptr, ret);
+        if (*((uint8_t *)ptr) == 0x24)
+        {
+            fprintf(stdout, "\n");
+            time(&t);
+            printf("%s", ctime(&t));
+            printf_array("serial_recv:", ptr, ret);
+        }
+        else 
+        {
+            printf_hex(NULL, ptr, ret);
+        }
+
     }
+
+    memset(ptr,0,8);
+
     return ret;
 }
 
@@ -225,7 +262,7 @@ static void signal_handler(int signo)
     return;
 }
 
-int main(int argc, char *argv)
+int main(int argc, char *argv[])
 {
     char *ps = NULL, sbuf[2048] = {0}, rbuf[2048] = {0};
     int slen = sizeof(sbuf);
@@ -239,12 +276,12 @@ int main(int argc, char *argv)
     signal(SIGQUIT, signal_handler); /* ctrl^\ */
     signal(SIGTERM, signal_handler); /* kill/killall */
 
-    while ((optval = getopt(argc, argv, ":t:b:d:p:s:")) != -1)
+    while ((optval = getopt(argc, argv, ":t:b:d:p:s:h")) != -1)
     {
         switch (optval)
         {
         case 't':
-            sprintf(dev, sizeof(dev), "%s", optarg);
+            snprintf(dev, sizeof(dev), "%s", optarg);
             break;
         case 'b':
             sscanf(optarg, "%d", &baud);
@@ -267,12 +304,11 @@ int main(int argc, char *argv)
     fd = open_serial(dev, baud, data_bits, stop_bits, parity);
     if (fd <= 0)
     {
-        printf("open serial %s failed\n", dev);
         exit(0);
     }
     printf("Please Enter Send Hex Str:");
-    ps = gets(rbuf);
-    str_to_hex(rbuf, sbuf, &slen);
+    ps = fgets(rbuf, 200, stdin);
+    str_to_hex(ps, sbuf, &slen);
     serial_send(fd, sbuf, slen);
     while (running)
     {

@@ -1,8 +1,0 @@
-make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --question
-'\\192.168.101.73\root\home\zhao_test\Modbus_test\my_test\rtu_master_test'
-����Ϊ��ǰĿ¼������·�������� CMD.EXE��
-UNC ·������֧�֡�Ĭ��ֵ��Ϊ Windows Ŀ¼��
-
-'make.exe' �����ڲ����ⲿ���Ҳ���ǿ����еĳ���
-���������ļ���
-
