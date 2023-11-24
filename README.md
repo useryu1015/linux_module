@@ -15,3 +15,12 @@
 协议： 
 
 
+
+## TODO
+1. 整理并封装程序，包括：
+* socket： 基于sink打包
+* serial： 
+* cjson、zmq、sqlite
+* mqtt： 
+
+
