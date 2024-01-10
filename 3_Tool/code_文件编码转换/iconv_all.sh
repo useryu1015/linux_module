@@ -1,10 +1,16 @@
-#转换目标目录下的所有指定文件的编码
-#本文件和iconv_tmp.sh以及目标目录必须放在一起
-#不建议使用参数传递目标目录，以免误操作
- 
- 
-EX_LIST=".c .cpp .h .sh"
-FILE_DIR="./Autumn_1124"
+# 转换目标目录下的所有指定文件的编码
+# tips： 建议拷贝文件到当前目录转换，避免异常或不符合预期
+
+# 转码函数
+function convert_encoding {
+    echo $1
+    iconv -f GB2312 -t UTF-8 -o iconv_template_ "$1"
+    cp iconv_template_ "$1"
+    rm iconv_template_
+}
+
+EX_LIST=".c .h .md"
+FILE_DIR="./"
 
 echo "target ${EX_LIST}"
 # 遍历EX_LIST
@@ -16,11 +22,6 @@ for ex in $EX_LIST ; do
     for file in $(find $FILE_DIR -type f -name '*'${ex}); do
         
         echo FILE: $file
-        ./iconv_tmp.sh $file
+        convert_encoding "$file" # 调用转码函数
     done
-
-
 done
-	
-
-# for f in $(find ./Autumn_1124 -type f -name "*.${s#.}"); do
