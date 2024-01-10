@@ -3,6 +3,7 @@
 typedef struct _enum_map_t {
 	int id;
 	char name[32];
+    int (*run_func)(void *);
 } enum_map_t;
 
 

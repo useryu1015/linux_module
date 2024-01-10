@@ -12,6 +12,11 @@ get_enum_values() {
     # 获取枚举值
     enum_values=$(echo "$enum_str" | sed -n '/{/,/}/p' | sed '1d;$d')           # 截取括号内的字符串
     enum_values=$(echo "$enum_values" | sed -e '1s/.*{//; $s/}.*//; s/,//g')    # 移除 enum 定义行并提取括号内字符串
+    
+    if [ -z "$enum_name" ] || [ -z "$enum_values" ]; then
+        echo "Insert format error"
+        exit 1
+    fi
 
     # return
     echo enum_name:     $enum_name
@@ -192,7 +197,6 @@ EOF
 
 
 init_code_file() {
-
     line_sta=$(grep -n 'Output code' "$code_file" | cut -d ':' -f 1)    # get first line
     line_end=$(grep -n 'Output end'  "$code_file" | cut -d ':' -f 1)
     line_sta=`expr $line_sta + 1`
@@ -207,7 +211,6 @@ init_code_file() {
     else
         echo "Error find '$code_file'."
     fi
-
 }
 
 show_usage() {
@@ -225,9 +228,11 @@ execute_command() {
             echo "clean ${code_file}"
             init_code_file
             rm -f test_app
+            rm -f $buff_file
             exit 1
             ;;
         *)
+            echo "start generate code..."
             ;;
     esac
 }
@@ -239,20 +244,8 @@ enum_values=""
 
 
 execute_command "$1"
-
-# Init: 格式化文件内容
-init_code_file
-
-if [ "$1" = "clean" ]; then
-    echo "clean ${code_file}"
-    rm -f test_app
-    exit 1
-else
-    echo "start generate code..."
-fi
-
-# 寄存枚举信息
-get_enum_values
+init_code_file      # 格式化
+get_enum_values     # 寄存枚举信息
 
 # 生成: 枚举值的字符串映射表
 echo -n > $buff_file
