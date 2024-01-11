@@ -3,16 +3,15 @@
 1. 将枚举值生成 字符串映射表
 2. 将json配置，生成C解析伪代码
 3. 将list链表，生成插入、删除、初始化函数
-4. 自动编译makefile和xx
 
 **TODO：**
-1. 插件、摆渡
+1. 制作APP（插件、命令、网页）便于个人使用
 
-### 1. 生成枚举值映射表
 
+### 1. enum映射表
 **使用说明：**
 1. 执行命令格式化代码区：./gen_enum_map.sh clean
-2. 在enum_content.c文件指定位置插入枚举声明
+2. 在enum_content.c 文件指定位置插入枚举声明
 3. 执行生成脚本：./gen_enum_map.sh
 ![](/.document/code_gen/enum代码生成器-使用说明.png)
 
@@ -22,6 +21,13 @@
 ![](/.document/code_gen/enum代码生成器-使用效果.png)
 
 
+### 2. json解析代码
+**使用说明：**
+1. 执行命令格式化代码区：./gen_json_parse.sh.sh clean
+2. json_content.c 文件指定位置插入枚举声明
+3. 执行生成脚本：./gen_json_parse.sh.sh
+**使用效果：**
+![](/.document/code_gen/json代码生成器.png)
 
 
 <!---
