@@ -10,14 +10,14 @@ typedef struct _enum_map_t {
 /*
  * Insert user code */
 typedef enum {
-	E_ID, 
-	E_NAME, 
-	E_SIZE,
-	E_test,
-	E_test2,
-	HI_E_TE__NN,
-	HI_E_TE_NN2
-} device_type;
+    COLOR_RED, 
+    COLOR_GREEN, 
+    COLOR_BLUE,
+    COLOR_YELLOW,
+    COLOR_MAGENTA,
+    COLOR_CYAN,
+    COLOR_WHITE
+} color_type;
 /* Insert end */
 
 

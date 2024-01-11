@@ -3,9 +3,9 @@
 
 **TODO**
 1. 整理并封装程序，包括：
-* socket： 封装sink套接字接口
-* serial： 
-* cjson、zmq、sqlite：
-* mqtt： 
+    * socket： 封装sink套接字接口
+    * serial： 
+    * cjson、zmq、sqlite：
+    * mqtt： 
 2. 整理文件结构
 

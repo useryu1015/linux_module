@@ -1,8 +1,8 @@
 #!/bin/bash
+source ../zh_shell_function.sh
+
 get_enum_values() {
-    enum_str=`sed -n '/enum /,/}/p' code_content.c`
-    # enum_str=`sed -n '/ENUM_STA/,/ENUM_END/p' code_content.c | sed '1d;$d' `
-    enum_str=`sed -n '/Insert user code/,/Insert end/p' code_content.c | sed '1d;$d' `
+    enum_str=`sed -n '/Insert user code/,/Insert end/p' $code_file | sed '1d;$d' `
     # echo $enum_str
 
     # 获取 枚举名称
@@ -237,7 +237,7 @@ execute_command() {
     esac
 }
 
-code_file=code_content.c
+code_file=enum_content.c
 buff_file=code_buffer.c
 enum_name=""
 enum_values=""
@@ -282,3 +282,8 @@ if which gcc >/dev/null; then
 else
     echo "GCC is not installed on this system."
 fi
+
+
+
+# print_func_usage
+color_echo GREEN "Output to file: ${code_file}"
