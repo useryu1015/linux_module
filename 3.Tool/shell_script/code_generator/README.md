@@ -19,6 +19,7 @@
 1. 执行命令格式化代码区：./gen_enum_map.sh clean
 2. 在enum_content.c 文件指定位置插入枚举声明
 3. 执行生成脚本：./gen_enum_map.sh
+
 ![](/.Document/code_gen/enum代码生成器-使用说明.png)
 
 **使用效果：**
