@@ -20,12 +20,12 @@
 1. 执行命令格式化代码区：./gen_enum_map.sh clean
 2. 在enum_content.c 文件指定位置插入枚举声明
 3. 执行生成脚本：./gen_enum_map.sh
-![](/.document/code_gen/enum代码生成器-使用说明.png)
+![](/.Document/code_gen/enum代码生成器-使用说明.png)
 
 **使用效果：**
 
 当前版本生成代码包括：枚举值字符串映射表、取值函数、调度函数
-![](/.document/code_gen/enum代码生成器-使用效果.png)
+![](/.Document/code_gen/enum代码生成器-使用效果.png)
 
 
 ### 2. json解析代码
@@ -35,7 +35,7 @@
 3. 执行生成脚本：./gen_json_parse.sh.sh
 
 **使用效果：**
-![](/.document/code_gen/json代码生成器.png)
+![](/.Document/code_gen/json代码生成器.png)
 
 
 <!---
