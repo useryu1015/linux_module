@@ -128,7 +128,7 @@ for (int i = E_ID; i < E_SIZE; ++i) {
 
 
 ---------------------------
-# [.document](.document)
+# [.Document](.Document)
 ## linux_module
 > LinuxC开发工具集（代码生成器、文本解析、脚本、编译、进程通信、日志、串口调试、字符驱动、协议栈等）
 
