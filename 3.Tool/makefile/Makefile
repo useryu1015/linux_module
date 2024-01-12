@@ -15,28 +15,26 @@ LDFLAGS = -lpthread -lm $(liblink) $(library)
 include := ./ #../inc
 source  := ./ #../src
 # 指定不编译的文件
-src_out := 
+src_out := #./test/*
 # 指定库文件和路径
 library	:= -L./library
 liblink	:= -lrt -ldl -lmodbus -lsnap7 -lmosquitto -lmqtt -lsqlite3 -lzmq -llua 
 # 存放中间文件的目录
 obj_dir := .obj
 
-## 添加链接器-I文件路径
+# 添加链接器-I文件路径
 incs := $(shell find ${include} -name "*.h")    
 incs := $(dir ${incs} hacks)                    
 incs := $(sort $(incs))                         
-INCS_P := $(foreach n,$(incs),-I$(n))   
+INCS_P := $(foreach n,$(incs),-I$(n))
 
-
-
-## 汇编目录下.c源文件
+# 汇编目录下.c源文件
 srcs := $(shell find ${source} -name "*.c")     
 out := $(shell ls ${src_out})           
 srcs := $(filter-out $(out),$(srcs))    
 OBJS := $(patsubst %.c, $(obj_dir)/%.o, $(srcs))
 
-## 汇编目录下.cpp源文件
+# 汇编目录下.cpp源文件
 cpps := $(shell find ${source} -name "*.cpp")  
 out := $(shell ls ${src_out})           
 cpps := $(filter-out $(out),$(cpps))    
