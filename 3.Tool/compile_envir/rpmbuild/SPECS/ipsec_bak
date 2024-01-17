@@ -1,0 +1,126 @@
+Name: IPSec
+Version: 0.1.0
+Release: release
+Summary: IPSec application
+Summary(zh_CN): IPSec应用程序
+AutoReqProv: no
+License: EULA
+Group: Applications/System
+Vendor: 信联科技
+Buildarch: x86_64
+Source0: %{name}-%{version}.tar.gz
+%description
+IPSec installation package
+%description -l zh_CN
+IPSec安装包
+
+%prep
+rm -rf $RPM_BUILD_ROOT/*
+echo "RPM_BUILD_ROOT: $RPM_BUILD_ROOT"
+%setup -q
+
+%install
+echo "%{summary}正在构建"
+install -d $RPM_BUILD_ROOT/
+cp -a * $RPM_BUILD_ROOT/
+exit 0
+
+
+# %pre: 在安装前运行的脚本
+%pre
+mkdir -p /xlian
+diskMsg=$(df /xlian | grep /)
+array=(${diskMsg// / })
+freeMb=$((array[3]/1024))
+needMb=720
+if [[ $needMb -gt ${freeMb} ]] ;then
+    output_red "当前计算机磁盘存储空间不足。仅剩余 ${freeMb} Mb。顺利安装运行 IPSec程序需要 $needMb Mb 磁盘空间。"
+    echo "退出中……"
+    exit 1
+else
+    echo "当前磁盘剩余${freeMb} Mb。"   >/dev/null 2>&1
+fi
+
+# %post：在安装后执行的脚本
+%post
+output_green() {
+  echo -e "\033[32m$1 \033[0m"
+}
+output_red(){
+  echo -e " $1"
+}
+
+#output_green "文件已经释放到/xlian"
+
+#mv /xlian/initramfs-4.8.0.img /boot/
+mv /xlian/System.map-4.8.0 /boot/
+mv /xlian/vmlinuz-4.8.0 /boot/
+mv /xlian/4.8.0 /lib/modules/
+
+#tar -zxvf /lib/modules/4.8.0.tar.gz -C /lib/modules/
+#rm -rf /lib/modules/4.8.0.tar.gz
+# 生成引导文件
+output_green "内核适配中，等待几分钟"   
+output_green "wait a moment"
+dracut /boot/initramfs-4.8.0.img 4.8.0 -f
+
+output_green "内核初始化..."
+if [ -d /sys/firmware/efi ]; then
+    grubcfg="/etc/grub2-efi.cfg"
+else
+    grubcfg="/etc/grub2.cfg"
+fi
+/usr/sbin/grub2-mkconfig -o ${grubcfg}
+/usr/sbin/grub2-set-default 0
+
+# output_green "/etc/profile中设置环境变量"
+echo \#IPSec_STA >> /etc/rc.d/rc.local
+echo export PATH=\${PATH}:/xlian/bin >> /etc/rc.d/rc.local
+echo export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:/xlian/lib >> /etc/rc.d/rc.local
+echo "/xlian/bin/ike &" >> /etc/rc.d/rc.local
+echo \#IPSec_END >> /etc/rc.d/rc.local
+
+output_green "应用程序安装完成，文件已释放到目录：/xlian"
+#output_red "请重启设备！(启动4.8内核)"
+echo ""
+echo -e "\e[31m请重启设备！(完成4.8内核安装) \e[0m"
+echo ""
+
+# 卸载前
+%preun
+mv /boot/System.map-4.8.0 /xlian
+mv /boot/vmlinuz-4.8.0 /xlian
+mv /lib/modules/4.8.0 /xlian
+source /xlian/script/del_startup.sh 
+
+if [ -d /sys/firmware/efi ]; then
+    grubcfg="/etc/grub2-efi.cfg"
+else
+    grubcfg="/etc/grub2.cfg"
+fi
+
+#echo "test: 恢复默认内核"
+echo "mkconfig: ${grubcfg}"
+/usr/sbin/grub2-mkconfig -o ${grubcfg}
+#echo "test2"
+/usr/sbin/grub2-set-default 0
+
+
+# 卸载后
+%postun
+#echo "删除4.8内核文件"
+#rm -rf /lib/modules/4.8.0
+echo "卸载完成"
+#rm -rf /boot/initramfs-4.8.0.img
+
+
+
+# 需要打包的文件
+%files
+/xlian
+%doc
+
+%changelog
+* Mon Apr 11 2022 by:xinlian
+- first build
+

@@ -1,3 +1,12 @@
+# [3.Tool/compile_envir](3.Tool/compile_envir)
+## 自动化编译&打包工具
+> 工具介绍：快速搭建交叉编译环境，在Makefile中指定工程文件路径即可（默认编译当前路径所有.c文件）
+> 
+> CSDN博文：[集成开发环境IDE设计](https://blog.csdn.net/ling0604/article/details/129144156)
+
+
+
+---------------------------
 # [3.Tool/shell_script/code_generator](3.Tool/shell_script/code_generator)
 ## 代码生成器
 **简述：**
@@ -132,6 +141,11 @@ for (int i = E_ID; i < E_SIZE; ++i) {
 # [.Document](.Document)
 ## linux_module
 > LinuxC开发工具集（代码生成器、文本解析、脚本、编译、进程通信、日志、串口调试、字符驱动、协议栈等）
+
+**Usage：**
+> 修改子目录下README.md后， 执行generate_readme.sh生成主目录下README.md文件
+> 
+> 脚本输出REDEME.md大纲
 
 **TODO**
 1. 整理并封装程序，包括：
