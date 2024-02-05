@@ -278,7 +278,7 @@ void led_blink_init()
 {
     int i;
 
-    strcpy(&led[0].led_fd, LED_RUN_BLUE);       // fixme: enum
+    strcpy(&led[0].led_fd, LED_RUN_BLUE);       // fixme: list data struct
     strcpy(&led[1].led_fd, LED_ERR_RED);
     strcpy(&led[2].led_fd, LED_WIFI_BLUE);
 

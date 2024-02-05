@@ -22,9 +22,6 @@ def main():
     # 连接到服务器
     client_socket.connect((server_host, server_port))
 
-    # 要发送的消息
-    message_to_send = "Hello, server! This is the client."
-
     # 启动接收线程
     receive_thread = threading.Thread(target=receive_data, args=(client_socket,))
     receive_thread.start()
