@@ -1,62 +1,49 @@
-#			-readme-			#
-# 功能：自动捕获指定路径下的工程文件，再进行编译&链接
-# 变量：
-#	include：头文件路径
-#	source： 源文件路径
-#	library：库文件路径
+# Features: Automatically captures and compiles/link project files in the specified paths
+INCLUDE  := ./
+SOURCE   := ./
+LIBRARY  := -L./library
+LIB_LINK := -lpthread -lm 
+OBJ_DIR  := .obj
+SRC_OUT	 := ./test/*
+
 TARGET  := ditoo
 CC      := arm-openwrt-linux-gnueabi-gcc
 CXX     := arm-openwrt-linux-gnueabi-g++
-DEBUG   = -g -Wall -O2 
-CFLAGS  = -c $(DEBUG) $(INCS_P)             
-LDFLAGS = -lpthread -lm $(liblink) $(library)  
+DEBUG   = -g -Wall -O2
+CFLAGS  = -c $(DEBUG) $(INCPATH)
+LDFLAGS = $(LIB_LINK) $(LIBRARY)
 
-# 指定项目头文件和源文件路径
-include := ./ #../inc
-source  := ./ #../src
-# 指定不编译的文件
-src_out := #./test/*
-# 指定库文件和路径
-library	:= -L./library
-liblink	:= -lrt -ldl -lmodbus -lsnap7 -lmosquitto -lmqtt -lsqlite3 -lzmq -llua 
-# 存放中间文件的目录
-obj_dir := .obj
+INCS	:= $(shell find ${INCLUDE} -name "*.h")    
+INCS	:= $(dir ${INCS} hacks)                    
+INCS	:= $(sort $(INCS))                         
+INCPATH := $(foreach n,$(INCS),-I$(n))   
 
-# 添加链接器-I文件路径
-incs := $(shell find ${include} -name "*.h")    
-incs := $(dir ${incs} hacks)                    
-incs := $(sort $(incs))                         
-INCS_P := $(foreach n,$(incs),-I$(n))
+SRCS	:= $(shell find ${SOURCE} -name "*.c")     
+OUTS	:= $(shell ls ${SRC_OUT})           
+SRCS	:= $(filter-out $(OUTS),$(SRCS))    
+COBJS	:= $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-# 汇编目录下.c源文件
-srcs := $(shell find ${source} -name "*.c")     
-out := $(shell ls ${src_out})           
-srcs := $(filter-out $(out),$(srcs))    
-OBJS := $(patsubst %.c, $(obj_dir)/%.o, $(srcs))
-
-# 汇编目录下.cpp源文件
-cpps := $(shell find ${source} -name "*.cpp")  
-out := $(shell ls ${src_out})           
-cpps := $(filter-out $(out),$(cpps))    
-OBJCPPS := $(patsubst %.cpp, $(obj_dir)/%.o, $(cpps))
+CPPS    := $(shell find ${SOURCE} -name "*.cpp")  
+OUTS	:= $(shell ls ${SRC_OUT})           
+CPPS    := $(filter-out $(OUTS),$(CPPS))    
+CPPOBJS := $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(CPPS))
 
 
-$(TARGET): $(OBJS) $(OBJCPPS)
+$(TARGET): $(COBJS) $(CPPOBJS)
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
-# 编译规则
-$(obj_dir)/%.o: %.c
+$(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(obj_dir)/%.o: %.cpp
+$(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CFLAGS) -c $< -o $@
 
 
 .PHONY: clean clean_obj
 clean:
-	rm -f $(TARGET)
-	rm -rf ${obj_dir}
+	rm -f ${TARGET}
+	rm -rf ${OBJ_DIR}
 clean_obj:
-	rm -f $(OBJS)
+	rm -rf ${OBJ_DIR}

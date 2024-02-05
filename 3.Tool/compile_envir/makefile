@@ -1,10 +1,7 @@
-#			-readme-			#
-# 功能：自动捕获指定路径下的工程文件，再进行编译&链接
-# 变量：
-#	include：头文件路径
-#	source： 源文件路径
-TARGET	:= proc_test
-CC	:= gcc
+# Makefile for Building Project
+# 特性:自动捕获和编译/链接指定路径下的项目文件
+TARGET  := proc_test
+CC      := gcc
 CFLAGS  = -g -Wall $(INCS_P) 				#1 设置编译选项：		# 在编译.c文件时	#-I:指定头文件路径 -L:指定库文件路径 -Wl,R:动态链接lib库
 LDFLAGS	= -lcrypto -lpthread -lm $(lib) $(LIB_P)  	#2 指定链接器要链接那些库文件	# 在链接.o文件时
 
