@@ -57,11 +57,19 @@
 **优化建议**
 ---------------------------
 # [3.Tool/compile_envir](3.Tool/compile_envir)
-## 自动化编译&打包工具
-> 工具介绍：快速搭建交叉编译环境，在Makefile中指定工程文件路径即可（默认编译当前路径所有.c文件）
+## 自动化编译与打包工具
+> 工具介绍：参考CMake、AutoMake和RPM制作zmake工具，用于快速搭建C/C++项目的交叉编译环境&程序安装包。
 > 
 > CSDN博文：[集成开发环境IDE设计](https://blog.csdn.net/ling0604/article/details/129144156)
-> 备注：makefile为测试版，Makefile为正式版
+
+**zmake.sh**
+> 自动化代码编译与软件打包脚本
+
+**Makefile**
+
+**sync_xx.sh**
+> 远程文件同步工具
+
 
 
 
@@ -201,12 +209,16 @@ for (int i = E_ID; i < E_SIZE; ++i) {
 ## linux_module
 > LinuxC开发工具集（代码生成器、文本解析、脚本、编译、进程通信、日志、串口调试、字符驱动、协议栈等）
 
-**Usage：**
-> 修改子目录下README.md后， 执行generate_readme.sh生成主目录下README.md文件
-> 
-> 脚本输出REDEME.md大纲
+**Usage:**
+1. 修改子目录下README.md
+2. 执行脚本：./generate_readme.sh 根目录生成README.md文件
 
-**TODO**
+**Tips:**
+* 脚本输出REDEME.md大纲
+* vscode预览快捷键：ctrl+K V
+* 单击标题跳转到对应目录
+
+**ToDo:**
 1. 整理并封装程序，包括：
     * socket： 封装sink套接字接口，select和epoll程序
     * serial： 
