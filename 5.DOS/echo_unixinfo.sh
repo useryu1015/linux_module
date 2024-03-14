@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # 定义日志文件路径
-# log_file="/var/log/system_monitor.log"
-log_file="./system_monitor.log"
+write_file=$1
+if [ -z "$write_file" ]; then
+    write_file="/dev/tty"
+fi
 
 # 获取当前时间
 time=$(date "+%Y-%m-%d %H:%M:%S")
@@ -25,4 +27,4 @@ net_connections=$(netstat -an | grep ESTABLISHED | wc -l)
 net_info="网络连接数：$net_connections"
 
 # 将监控结果输出到日志文件中
-echo "$time $cpu_info $mem_info $disk_info $net_info" >> "$log_file"
+echo "$time $cpu_info $mem_info $disk_info $net_info" >> "$write_file"
