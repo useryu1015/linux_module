@@ -4,8 +4,8 @@
 > CSDN博文：[集成开发环境IDE设计](https://blog.csdn.net/ling0604/article/details/129144156)
 
 **Usage**
-1. 将 zmake 和 Makefile 拷贝到工程目录。
-2. 使用make默认gcc编译当前目录所有c/cpp源文件，可自定义源文件路径、链接库、ignore等
+1. 将 zmake 和 Makefile 拷贝到工程目录
+2. make 默认编译当前目录所有c/cpp源文件，可自定义源文件路径、链接库、交叉编译、ignore等
 3. 查看交叉编译选项执行命令：./zmake -h
 ```
 [root@localhost compile_envir]# ./zmake -h
