@@ -8,7 +8,6 @@
 1. **多线程支持：** 具备多线程环境下对同一LED进行控制的权重配置
 2. **LED闪烁控制：** 提供LED闪烁的周期、频率、间隔、次数等灵活配置选项（通过数据结构 `led_components` 进行管理）
 3. **GPIO驱动接口：** 具备自定义GPIO驱动接口的能力，通过函数 `led_gpio_switch` 进行配置
-4. 
 
 
 
@@ -32,7 +31,6 @@
 * 支持日志文件多进程同时占用（如果对竞态条件有严格需求，需要加文件锁）
 * 支持日志文件自动初始化（通过lsof检测文件是否被进程占用，NULL则覆盖日志）
 * 支持调试日志输出等级配置（zlog_set_printlev函数配置）
-* 
 
 **优化**
 
@@ -62,12 +60,21 @@
 > 
 > CSDN博文：[集成开发环境IDE设计](https://blog.csdn.net/ling0604/article/details/129144156)
 
-**zmake**
-> 自动化代码编译与软件打包工具
-
-**Makefile**
-> zmake依赖
-
+**Usage**
+1. 将 zmake 和 Makefile 拷贝到工程目录。
+2. 使用make默认gcc编译当前目录所有c/cpp源文件，可自定义源文件路径、链接库、ignore等
+3. 查看交叉编译选项执行命令：./zmake -h
+```
+[root@localhost compile_envir]# ./zmake -h
+Usage: ./zmake [-h] [-c core] [-o opt]
+Options:
+  -h, --help      Display help message
+  -c core         Set target platform architecture(e320, x100, x300, x86)
+  -o opt          Set operation mode:
+                    debug: build in debug mode
+                    clean: clean up build artifacts
+                    pack: pack the built artifacts
+```
 ---------------------------
 # [3.Tool/shell_script/code_generator](3.Tool/shell_script/code_generator)
 ## 代码生成器
