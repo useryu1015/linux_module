@@ -48,28 +48,83 @@ get_key_life() {
     # return $val
 }
 
-show_usage() {
+show_cmd_usage() {
     echo "Usage: $0 opt"
     echo "opt=<clean|-h|--help>"
-    exit 1
+    exit 0
 }
 
 execute_command() {
     case "$1" in
         -h | --help)
-            show_usage
+            show_cmd_usage
             ;;
         clean)
             echo "clean ${code_file}"
             init_code_file
             rm -f test_app
             rm -f $buff_file
-            exit 1
+            exit 0
             ;;
         *)
             ;;
     esac
 }
+
+show_usage()
+{
+    echo "Usage: $0 [-h] [-c core] [-o opt]"
+    echo "Options:"
+    echo "  -h, --help      Display help message"
+    echo "  -c core         core: target platform architecture"
+    echo "  -o opt          opt: [debug | clean | pack]"
+
+    exit 0
+}
+
+process_options()
+{
+        # 解析命令行参数
+        while getopts ":hc:o:-:" opt; do
+        case $opt in
+            h)
+                show_usage                
+                ;;
+            c)
+                # 处理 -c 选项的参数
+                CORE_APP="$OPTARG"
+                ;;
+            o)
+                # 处理 -o 选项的参数
+                OTHER_OPER="$OPTARG"
+                ;;
+            -)
+                case "${OPTARG}" in
+                    help)
+                        # 处理 --help 选项
+                        show_usage
+                    ;;
+                    *)
+                        # 其他选项
+                    ;;
+                esac
+                ;;
+            \?)
+                # 处理无效选项
+                echo "Invalid option: -$OPTARG" >&2
+                exit 1
+                ;;
+            :)
+                # 处理缺少参数的选项
+                echo "Option -$OPTARG requires an argument." >&2
+                exit 1
+                ;;
+        esac
+    done
+
+    # exit 0
+}
+
 
 
 # 关联数组用于存储颜色值和对应的 ANSI 转义序列

@@ -4,8 +4,8 @@
 INCLUDE	:= ./
 SOURCE	:= ./
 LIBRARY ?= -L./ -L./$(COMPILER_LIB_PTAH)
-LIB_LINK:= -lpthread -lm -lrt -ldl #-lmodbus -lmosquitto -lmqtt -lsqlite3 -lzmq -llua -lsnap7
-SRC_OUT	:= 
+LIB_LINK:= #-lpthread -lm -lrt -ldl #-lmodbus -lmosquitto -lmqtt -lsqlite3 -lzmq -llua -lsnap7
+SRC_OUT	:= ./common/*
 OBJ_DIR	:= .obj
 
 # config
@@ -35,7 +35,7 @@ CPPOBJS := $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(CPPS))
 
 $(TARGET): $(COBJS) $(CPPOBJS)
 	$(CXX) $^ -o $@ $(LDFLAGS)
-	$(STRIP) $(TARGET)
+#	$(STRIP) $(TARGET)
 
 # Compilation rules
 $(OBJ_DIR)/%.o: %.c
