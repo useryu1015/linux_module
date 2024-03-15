@@ -1,0 +1,219 @@
+#!/bin/bash
+##                          Readme                            ##
+# * 用于快速搭建C/C++中小项目的交叉编译环境&程序安装包。
+# * Github：https://github.com/useryu1015/linux_module/tree/main/3.Tool/compile_envir
+# * **使用说明：** zmake -h
+# * **继续编译当前内核：** zmake
+# * **格式化编译工作区：** zmake -o clean
+# 
+# * 在$RUNDIR/lib/ 文件中，添加交叉编译链接库。（便于链接&打包）
+# * 拷贝zmake到user/bin： cp zmake /usr/bin/zmake
+# 
+
+## 打包
+app_pack()
+{
+    if [ -z "$CLOUD_DIR" ]; then
+        echo "error: unknown cloud..."
+        exit 1
+    fi
+
+    cd $INSTALL
+
+    # 需要打包的动态库
+    ${COMPILER_PREFIX}-strip ditoo              # xxxxx
+    \cp -a $RUNDIR/lib/lib_$CORE_APP/libzmq.so.5 ./DT4/lib
+    \cp -a $RUNDIR/ditoo ./DT4
+    tar -zcvf dt4.tar.gz DT4 
+
+    # scp  密码：ditoo@123      fix: export 免密传输
+    # scp dt4.tar.gz ditoo@192.168.0.43:/gateway/software/$CLOUD_DIR/
+    echo "Enter: ditoo@123"
+    scp dt4.tar.gz $CLOUD_DIR
+
+    cd $RUNDIR
+
+    echo -e "\033[0;32m--scp $CLOUD_DIR done\033[0m"
+}
+
+app_pack_clean()
+{
+    cd $INSTALL
+
+    # clean
+    rm -f dt4.tar.gz
+    rm -f ./DT4/ditoo
+    rm -f ./DT4/lib/*
+
+    cd $RUNDIR
+}
+
+## 编译
+app_build()
+{
+    # check_build_core: 如果平台不同，则clean后编译
+    if [ "$CORE_APP" != "$CORE_CURRENT" ];then
+        echo "clean"
+        make clean
+        app_pack_clean
+    fi
+
+    echo $CORE_APP > ${CORE_CONFILE}
+    make -j4 COMPILER_LIB_PTAH=$COMPILER_LIB_PTAH COMPILER_PREFIX=$COMPILER_PREFIX COMPILER_CFLAGS=$COMPILER_CFLAGS
+}
+
+show_usage()
+{
+    echo "Usage: $0 [-h] [-c core] [-o opt]"
+    echo "Options:"
+    echo "  -h, --help      Display help message"
+    echo "  -c core         Set target platform architecture(e320, x100, x300, x86)"
+    echo "  -o opt          Set operation mode:"
+    echo "                    debug: build in debug mode"
+    echo "                    clean: clean up build artifacts"
+    echo "                    pack: pack the built artifacts"
+
+    exit 0
+}
+
+process_options()
+{
+        # 解析命令行参数
+        while getopts ":hc:o:-:" opt; do
+        case $opt in
+            h)
+                show_usage                
+                ;;
+            c)
+                # 处理 -c 选项的参数
+                CORE_APP="$OPTARG"
+                ;;
+            o)
+                # 处理 -o 选项的参数
+                OTHER_OPER="$OPTARG"
+                ;;
+            -)
+                case "${OPTARG}" in
+                    help)
+                        # 处理 --help 选项
+                        show_usage
+                    ;;
+                    *)
+                        # 其他选项
+                    ;;
+                esac
+                ;;
+            \?)
+                # 处理无效选项
+                echo "Invalid option: -$OPTARG" >&2
+                exit 1
+                ;;
+            :)
+                # 处理缺少参数的选项
+                echo "Option -$OPTARG requires an argument." >&2
+                exit 1
+                ;;
+        esac
+    done
+}
+
+workbase_init()
+{
+    ## 创建 
+    CORE_CURRENT=""
+    if [ -f ${CORE_CONFILE} ]; then
+        CORE_CURRENT=$(cat ${CORE_CONFILE})
+    else
+        touch ${CORE_CONFILE}
+    fi
+
+    ## 使用zmake 继续编译当前内核架构
+    if [[ -z "$CORE_APP" && -n "$CORE_CURRENT" ]]; then
+        CORE_APP=$CORE_CURRENT       # 初始化 默认交叉编译平台
+    fi
+}
+
+perform_operation() {
+    case "$OTHER_OPER" in
+        debug)
+            echo "--CORE_APP=$CORE_APP  OTHER_OPER=$OTHER_OPER CLOUD_DIR=$CLOUD_DIR"
+            echo "--COMPILER_LIB_PTAH=$COMPILER_LIB_PTAH  COMPILER_PREFIX=$COMPILER_PREFIX COMPILER_CFLAGS=$COMPILER_CFLAGS"
+            echo ""
+            echo "makefile:"
+            make debug COMPILER_LIB_PTAH=$COMPILER_LIB_PTAH COMPILER_PREFIX=$COMPILER_PREFIX COMPILER_CFLAGS=$COMPILER_CFLAGS
+            ;;
+        clean)
+            make clean
+            app_pack_clean
+            echo "" > $CORE_CONFILE
+            ;;
+        pack)
+            app_build
+            app_pack
+            ;;
+        *)
+            echo "Unknown operation: $OTHER_OPER"
+            exit 1
+            ;;
+    esac
+
+    exit 0
+}
+
+custom_task()
+{
+    ##                          cp mnt                          ##
+    # cp ditoo /home/share_mnt/
+    # cp ditoo_main.json /home/share_mnt/
+    # cp modbus_dp.json /home/share_mnt/
+    # cp virtual_dp.json /home/share_mnt/
+
+    ##                          cp x86 self                     ##
+    if [ "$CORE_APP" == "x86" ];then
+        # \cp ditoo_main.json /mnt/nandflash/DT4/conf
+        rm -f /mnt/nandflash/DT4/ditoo
+        \cp ditoo /mnt/nandflash/DT4/
+    fi
+
+    ##                           远端同步：                      ##
+    # while true; do date ; sleep 2; \cp ../mount_dir/ditoo .; done
+    # while true; do date ; sleep 2; then \mv /mnt/nandflash/mount_dir/ditoo /mnt/nandflash/DT4/ \ ; done
+}
+
+##                          main                            ##
+RUNDIR=`cd $(dirname $0); pwd -P`
+RUNDIR=$(pwd)
+INSTALL=../run_env
+CORE_APP=""
+CORE_CONFILE=".zmake_core.info"
+CORE_CURRENT=
+OTHER_OPER=
+
+process_options "$@"
+workbase_init
+
+# 配置makefile依赖
+COMPILER_PREFIX=""
+COMPILER_LIB_PTAH=./lib/lib_$CORE_APP       # 交叉编译库路径
+COMPILER_CFLAGS="-D$CORE_APP"                  # 调试选项
+CLOUD_DIR=ditoo@192.168.0.43:/gateway/software/$CORE_APP/
+if [ "$CORE_APP" == "e320" ];then
+    COMPILER_PREFIX=arm-openwrt-linux-gnueabi-
+    # CLOUD_DIR="e320"
+elif [ "$CORE_APP" == "x100" ];then
+    COMPILER_PREFIX=arm-openwrt-linux-muslgnueabi-
+elif [ "$CORE_APP" == "x300" ];then
+    COMPILER_PREFIX=arm-openwrt-linux-muslgnueabi-
+elif [ "$CORE_APP" == "x86" ];then
+    COMPILER_PREFIX=""
+fi
+
+# 拓展选项
+if [ -n "$OTHER_OPER" ]; then
+    perform_operation
+fi
+
+app_build
+echo -e "\033[0;32m--Core[$CORE_APP] build done\033[0m"
+
+custom_task

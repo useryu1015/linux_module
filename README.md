@@ -62,16 +62,11 @@
 > 
 > CSDN博文：[集成开发环境IDE设计](https://blog.csdn.net/ling0604/article/details/129144156)
 
-**zmake.sh**
-> 自动化代码编译与软件打包脚本
+**zmake**
+> 自动化代码编译与软件打包工具
 
 **Makefile**
-
-**sync_xx.sh**
-> 远程文件同步工具
-
-
-
+> zmake依赖
 
 ---------------------------
 # [3.Tool/shell_script/code_generator](3.Tool/shell_script/code_generator)
@@ -203,6 +198,89 @@ for (int i = E_ID; i < E_SIZE; ++i) {
 -->
 
 
+
+---------------------------
+# [4.Test/test_FOCAS/fwlib](4.Test/test_FOCAS/fwlib)
+# Fanuc FOCAS Library
+[![Docker Hub](https://img.shields.io/docker/v/strangesast/fwlib?sort=date)](https://hub.docker.com/r/strangesast/fwlib)  
+Header and runtime files for CNC communication  
+
+# Docker
+Build the base image with `docker build .`  
+
+Build an example with `docker build examples/c/Dockerfile`   
+
+# `examples/`  
+Link or rename appropriate `libfwlib\*.so` (based on platform) to `libfwlib32.so.1` and `libfwlib32.so` 
+
+On linux x86\_64 for example: `ln -s libfwlib32-linux-x64.so.1.0.5 libfwlib32.so` 
+
+More instructions in each example folder
+
+---------------------------
+# [4.Test/test_FOCAS/fwlib/examples/c-minimal](4.Test/test_FOCAS/fwlib/examples/c-minimal)
+# Instructions
+
+## Linux
+From the root of this repository:  
+```
+gcc -L./ -Wl,-rpath . examples/c-minimal/main.c -lfwlib32 -lm -lpthread -o fanuc_minimal
+./fanuc_minimal
+```
+
+## Windows
+Requires Visual Studio or [Visual Studio Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019)  
+From the root of this repository:  
+```
+cl.exe /Fe"fanuc_minimal.exe" .\examples\c-minimal\main.c /link .\Fwlib32.lib
+.\fanuc_minimal.exe
+```
+
+---------------------------
+# [4.Test/test_FOCAS/fwlib/examples/c](4.Test/test_FOCAS/fwlib/examples/c)
+# Fanuc fwlib example
+![CMake](https://github.com/strangesast/fwlib/workflows/CMake/badge.svg)
+![Windows CMake](https://github.com/strangesast/fwlib/workflows/Windows%20CMake/badge.svg)  
+An example that connects to a machine specified by configuration options (file / env / arg)  
+Usage (all args are optional):  
+```
+./bin/fanuc_example --config=<path_to_config> --port=<device port> --ip=<device ip>
+```
+
+**Notice:** This example requires fetching submodules first (`git submodule update --init --recursive`)  
+
+# Docker (Linux containers)
+From the root of this repository:
+```
+docker build -t fwlib_c-example -f examples/c/Dockerfile .
+docker run --rm --network=host -it fwlib_c-example
+```
+
+# Linux
+1. Copy `libfwlib32-linux-$arch.so.$version` to `/usr/local/lib` then run `ldconfig`.  Install config with `apt install libconfig-dev` or compile manually.  
+2. `mkdir build && cd build`  
+3. `cmake ..`  
+4. `cmake --build .`  
+5. `ctest -V`  
+
+# Windows
+1. Compile libconfig in `extern/libconfig/build` with `cmake -A Win32 ..` and `cmake --build . --config Release`  
+2. `cmake -E make_directory build`  
+3. `cd build`  
+4. `cmake -A Win32 ..`  
+5. `cmake --build .`  
+6. `.\bin\fanuc_example.exe` (Fwlib32.dll may need to be moved to cwd)  
+
+# Development / Debug
+Copy `compile_commands.json` from build dir to use with IDE  
+
+---------------------------
+# [4.Test/test_FOCAS/fwlib/examples/go](4.Test/test_FOCAS/fwlib/examples/go)
+# Usage
+
+0. Install go
+1. `go build -o fwlib_example .`
+2. `./fwlib_example`
 
 ---------------------------
 # [.Document](.Document)

@@ -3,13 +3,8 @@
 > 
 > CSDN博文：[集成开发环境IDE设计](https://blog.csdn.net/ling0604/article/details/129144156)
 
-**zmake.sh**
-> 自动化代码编译与软件打包脚本
+**zmake**
+> 自动化代码编译与软件打包工具
 
 **Makefile**
-
-**sync_xx.sh**
-> 远程文件同步工具
-
-
-
+> zmake依赖
