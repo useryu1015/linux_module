@@ -31,3 +31,7 @@
 # special
 *.vscode/
 
+4.Test/test_FOCAS/
+4.Test/test_FOCAS/FANUC_Focas_API
+4.Test/test_FOCAS/fwlib
+4.Test/test_FOCAS/new_fwlib/fwlib
