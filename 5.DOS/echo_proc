@@ -1,0 +1,35 @@
+#!/bin/sh
+
+write_file="${1:-/dev/tty}"
+proc_name="${2:-ditoo}"
+
+pritf_log() {
+    local mes="$1"
+    local cmd="$2"
+
+    # echo CDM: $mes $cmd
+    # 添加信息到文件
+    echo "**$mes**  "   >> "${write_file}"
+    echo '```'          >> "${write_file}"
+    eval "$cmd"         >> "${write_file}"
+    echo "\`\`\`"       >> "${write_file}"
+    echo                >> "${write_file}"
+}
+
+
+# echo 当前时间： > ${write_file}; date >> ${write_file}; echo ------ >> ${write_file};
+pritf_log "当前时间：" "date"
+pritf_log "内存使用情况：" "free -h"
+pritf_log "磁盘使用情况：" "df -h"
+pritf_log "在线进程信息：" "pidof ${proc_name}"
+pritf_log "在线进程信息：" "pgrep -a -f ${proc_name}"
+pritf_log "网络连接状态：" "netstat -natp | grep ${proc_name}"
+
+## x86：处理一些复杂的命令&调试信息
+core=`uname -m`
+if [ $core = "x86_64" ]; then
+    echo x86_64 architecture
+
+    pritf_log "进程资源占用：" "ps aux | egrep '${proc_name}|USER'"
+fi
+

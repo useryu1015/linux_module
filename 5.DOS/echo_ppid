@@ -1,0 +1,92 @@
+#!/bin/sh
+
+write_file="${1:-/dev/tty}"
+proc_name="${2:-ditoo}"
+
+# write_file="
+
+# 函数：限制字符串宽度
+# 参数：
+#   $1: 要截断的字符串
+#   $2: 最大宽度
+# 返回值：截断后的字符串
+truncate_string() {
+    local string="$1"
+    local max_width="$2"
+
+    if [ ${#string} -gt $max_width ]; then
+        echo "${string:0:$max_width}"
+    else
+        echo "$string"
+    fi
+}
+
+
+# 函数：获取进程内存信息
+# 参数：
+#   $1: 进程 PID
+# 输出：进程的虚拟内存、物理内存和磁盘内存信息
+get_process_memory_info() {
+    local pid="$1"
+    local cmd="$2"
+    local status_file="/proc/$pid/status"
+
+    # 检查进程是否存在
+    if [ ! -e "$status_file" ]; then
+        echo "Process with PID $pid does not exist."
+        return 1
+    fi
+
+    # 提取虚拟内存、物理内存和磁盘内存信息
+    local virtual_memory=$(awk '/VmSize/ {print $2 " " $3}' "$status_file")
+    local physical_memory=$(awk '/VmRSS/ {print $2 " " $3}' "$status_file")
+    local disk_memory=$(awk '/VmSwap/ {print $2 " " $3}' "$status_file")
+
+    # 输出信息
+    printf "%-10s %-16s %-16s %-16s %-40s\n" "$pid" "$virtual_memory" "$physical_memory" "$disk_memory" "$cmd" >> "${write_file}"
+
+}
+
+# 处理进程信息函数
+process_info() {
+    local info="$1"
+    local pid=$(echo "$info" | awk '{print $1}')
+    local proc=$(echo "$info" | awk '{$1=""; print $0}')
+
+    # 在这里编写你的处理逻辑，例如发送信号给进程等
+    get_process_memory_info $pid "$proc"
+}
+
+# 循环处理进程信息函数
+loop_process_info() {
+    local pattern="$1"
+    local interval="$2"
+
+    while true; do
+        echo "**[$pattern]进程状态：**"     >> "${write_file}"
+        echo '```'  >> "${write_file}"
+        printf "%-10s %-20s %-20s %-20s %-40s\n" "PID" "虚拟内存" "物理内存" "磁盘内存" "执行命令" >> "${write_file}"
+
+        # 使用 pgrep 命令获取匹配的进程信息
+        # local processes=$(pgrep -f "$pattern" -a)
+        # # 逐行处理进程信息      # fixme: arm执行异常
+        # while IFS= read -r line; do
+        #     process_info "$line"
+        # done <<< "$processes"
+
+        pgrep -f "$pattern" -a | while IFS= read -r line; do
+            # 在这里处理每一行的输出结果
+            # echo "$line"
+            process_info "$line"
+        done
+
+        echo '```'  >> "${write_file}"
+        
+        return
+        # 休眠一段时间
+        sleep "$interval"
+    done
+}
+
+# 在这里调用循环处理进程信息函数，并传入进程匹配模式和循环间隔
+loop_process_info "$proc_name" 5

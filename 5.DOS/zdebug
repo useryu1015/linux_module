@@ -1,0 +1,148 @@
+#!/bin/sh
+##                          Readme                            ##
+# * 用于调试xx
+
+## 全局
+OTHER_OPER=
+    
+## 杀死进程
+dt4_killall_proc()
+{
+    ## 杀死看门狗
+    PGREP_RESULT=$(pgrep -f "reboot_server.sh")
+    if [ -n "$PGREP_RESULT" ]; then
+        kill $PGREP_RESULT
+        echo "All matching processes terminated."
+    fi
+
+    ## 杀死主程序
+    PGREP_RESULT=$(pgrep -f "ditoo")
+    if [ -n "$PGREP_RESULT" ]; then
+        kill $PGREP_RESULT
+        # killall ditoo
+        echo "All matching processes terminated."
+    fi
+}
+
+## 测试主线程维护
+dt4_wdogs()
+{
+    while true
+    do
+        pgrep_ret=$(pgrep -f "ditoo main")
+        if [ -z "$pgrep_ret" ]; then
+            echo restart main
+            /mnt/nandflash/DT4/ditoo main >> /dev/null 2>&1 &
+        fi
+
+        pgrep_ret=$(pgrep -f "ditoo report")
+        if [ -z "$pgrep_ret" ]; then
+            echo restart report
+            /mnt/nandflash/DT4/ditoo report >> /dev/null 2>&1 &
+        fi
+
+        sleep 1
+    done
+}
+
+show_usage()
+{
+    echo "Usage: $0 [-h] [-c core] [-o opt]"
+    echo "Options:"
+    echo "  -h, --help      Display help message"
+    # echo "  -c core         Set target platform architecture(e320, x100, x300, x86)"
+    echo "  -o opt          Set operation mode:"
+    echo "                    wdog:     运行看门狗"
+    echo "                    wdogs:    运行 main && report 看门狗"
+    echo "                    kill:     杀死所有进程"
+    echo "                    print:    打印调试信息"
+
+    exit 0
+}
+
+perform_operation() {
+    echo "-- run $OTHER_OPER"
+    case "$OTHER_OPER" in
+        wdog)
+            /etc/reboot_server.sh
+            ;;
+        wdogs)
+            dt4_killall_proc
+            dt4_wdogs
+            ;;
+        kill)
+            dt4_killall_proc
+            ;;
+        print)
+            /mnt/nandflash/DT4/tools/print_debug_info.sh
+            ;;
+        *)
+            echo "Unknown operation: $OTHER_OPER"
+            exit 1
+            ;;
+    esac
+
+    exit 0
+}
+
+process_options()
+{
+        # 解析命令行参数
+        while getopts ":hc:o:-:" opt; do
+        case $opt in
+            h)
+                show_usage                
+                ;;
+            c)
+                # 处理 -c 选项的参数
+                CORE_APP="$OPTARG"
+                ;;
+            o)
+                # 处理 -o 选项的参数
+                OTHER_OPER="$OPTARG"
+                perform_operation
+                ;;
+            -)
+                case "${OPTARG}" in
+                    help)
+                        # 处理 --help 选项
+                        show_usage
+                    ;;
+                    *)
+                        # 其他选项
+                    ;;
+                esac
+                ;;
+            \?)
+                # 处理无效选项
+                echo "Invalid option: -$OPTARG" >&2
+                exit 1
+                ;;
+            :)
+                # 处理缺少参数的选项
+                echo "Option -$OPTARG requires an argument." >&2
+                exit 1
+                ;;
+        esac
+    done
+}
+
+##                          main                            ##
+RUNDIR=$(pwd)
+
+process_options "$@"
+
+# 配置makefile依赖
+if [ "$CORE_APP" == "e320" ];then
+    COMPILER_PREFIX=arm-openwrt-linux-gnueabi-
+    # CLOUD_DIR="e320"
+elif [ "$CORE_APP" == "x100" ];then
+    COMPILER_PREFIX=arm-openwrt-linux-muslgnueabi-
+elif [ "$CORE_APP" == "x300" ];then
+    COMPILER_PREFIX=arm-openwrt-linux-muslgnueabi-
+elif [ "$CORE_APP" == "x86" ];then
+    COMPILER_PREFIX=""
+fi
+
+
+echo -e "\033[0;32m--debug done\033[0m"
