@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <time.h>
 #include <pthread.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 #include "zwdog.h"
 
@@ -75,6 +77,12 @@ int zwdog_new(int *fd, int timeout, __unfeed_cback cback, const char *pname)
     *fd = fd_pointer++;     // init fd
     pthread_mutex_unlock(&fd_init_mutex);
 
+    // 初始化 状态锁
+    if (pthread_mutex_init(&pdog->fdog_mutex, NULL) != 0) {
+        perror("锁初始化失败\n");
+        return -1;
+    }
+
     pdog->fd = *fd;
     pdog->timeout = timeout ? timeout : ZWDOG_MAX_FEED_TIME;
     pdog->unfeed_cback = cback ? cback : zwdog_default_cback;
@@ -104,7 +112,9 @@ int zwdog_feed(int fd)
 
     while (pdog != NULL) {
         if (pdog->fd == fd) {
+            pthread_mutex_lock(&pdog->fdog_mutex);
             pdog->fdog_time = get_cpu_time_ms();
+            pthread_mutex_unlock(&pdog->fdog_mutex);
             return 0;
         }
 
@@ -124,6 +134,7 @@ int zwdog_sche(uint64_t freq_ms)
 {
     zwdog_list_t *pdog = pdog_head;
     uint64_t now_time = get_cpu_time_ms();
+    uint64_t feed_time= 0;
 
     if (freq_ms > 0) {
         static uint64_t last_time = 0;
@@ -136,8 +147,12 @@ int zwdog_sche(uint64_t freq_ms)
     }
 
     while (pdog != NULL) {
-        if (now_time - pdog->fdog_time > pdog->timeout) {
-            /* 喂狗超时动作 */
+        pthread_mutex_lock(&pdog->fdog_mutex);
+        feed_time = pdog->fdog_time;
+        pthread_mutex_unlock(&pdog->fdog_mutex);
+
+        if (now_time - feed_time > pdog->timeout) {
+            /* 喂狗超时：执行回调函数 */
             pdog->unfeed_cback(pdog->fd);
             return pdog->fd;
         }
@@ -148,18 +163,25 @@ int zwdog_sche(uint64_t freq_ms)
     return 0;
 }
 
-void zwdog_demo(void)
+
+#ifdef RUN_ZWDOG_DEMO
+// void zwdog_demo(void)
+void main(void)
 {
     int user_fd1;
     int user_fd2;
 
-    zwdog_new(&user_fd1, 2 *1000, NULL, "DEMO 1");     /* 新建监控对象，并喂狗 */
-    zwdog_new(&user_fd2, 0, NULL, "DEMO 2");
+    /* 新建监控对象1（超过5秒未喂狗，则触发超时回调函数） */
+    zwdog_new(&user_fd1, 5 *1000, NULL, "TASK 1");
+    /* 新建监控对象2 */
+    zwdog_new(&user_fd2, 0, NULL, "TASK 2");
+    printf("zwdog demo start\n");
 
     while (1) {
-        zwdog_feed(user_fd2);   /* 喂狗 */
+        zwdog_feed(user_fd2);   // 喂狗
 
-        zwdog_sche(0);          /* 遛狗 */
+        zwdog_sche(0);          // 遛狗
         sleep(1);
     }
 }
+#endif

@@ -30,7 +30,7 @@ typedef struct _zwdog_list_t
 
     /* status */
     volatile uint64_t       fdog_time;          /* 喂狗时间 */
-    pthread_mutex_t         mutex;
+    pthread_mutex_t         fdog_mutex;         /* 时间互斥锁 */
     
     struct _zwdog_list_t    *next;
 } zwdog_list_t;
