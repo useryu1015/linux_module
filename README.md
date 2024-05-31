@@ -54,6 +54,67 @@
 
 **优化建议**
 ---------------------------
+# [2.Midware/watch_dog](2.Midware/watch_dog)
+## Linux看门狗（线程守护、进程守护、任务守护） 已弃用
+**说明**
+1. **进程看门狗：** 使用fork、shell等方式，监控进程状态
+2. **线程看门狗：** 基于定时器，配置窗口看门狗的初始化、喂狗等流程；并根据任务权重，按需重新系统
+3. **任务看门狗：** 
+
+
+**Linux窗口看门狗**
+1. 定义&初始化任务堆栈结构体 task_info;
+2. 监控task_info的喂狗状态， 超时返回任务句柄（&task_info）
+3. 根据task_info信息， 处理超时程序
+
+
+**拓展**
+* **迷你操作系统：**
+> 使用xx接口函数， 能实现task 初始化，使能，监控，喂狗等捆绑操作
+
+* **mini_scheduler()函数开发** 
+> 创建一个线程，管理多个任务的调度策略。包括任务执行频率...     
+> 使用一个链表，注册任务 频率、状态、喂狗、等操作句柄。     
+> 备注： 通过一个线程管理多个任务，能够减少对系统资源的占用。 （如果使用线程使能mini_scheduler，需要合理控制其堆栈大小）
+
+
+
+**参考资料**    
+* [Linux软件看门狗-已弃用](https://github.com/sunmingbao/soft-wdt)：一款通过/dev/soft_wdt喂狗的程序 
+<!-- * [守护线程设计]()
+* [MCU独立看门狗&窗口看门狗]()
+* [fork监控]() -->
+---------------------------
+# [2.Midware/zwdog](2.Midware/zwdog)
+## Linux窗口看门狗（驱动程序）
+**概述**
+* 监控程序是否跑飞，任务线程是否阻塞& 超时等；
+* 可自定义喂狗超时回调函数，便于资源回收& 异常处理等。
+
+**示例**
+
+``` C
+void zwdog_demo(void)
+{
+    int user_fd1;
+    int user_fd2;
+
+    zwdog_new(&user_fd1, 2 *1000, NULL, "DEMO 1");     /* 新建监控对象，并喂狗 */
+    zwdog_new(&user_fd2, 0, NULL, "DEMO 2");
+
+    while (1) {
+        zwdog_feed(user_fd2);   /* 喂狗 */
+
+        zwdog_sche(0);          /* 遛狗 */
+        sleep(1);
+    }
+}
+```
+
+
+
+
+---------------------------
 # [3.Tool/compile_envir](3.Tool/compile_envir)
 ## 自动化编译与打包工具
 > 工具介绍：参考CMake、AutoMake和RPM制作zmake工具，用于快速搭建C/C++项目的交叉编译环境&程序安装包。
@@ -75,6 +136,66 @@ Options:
                     clean: clean up build artifacts
                     pack: pack the built artifacts
 ```
+---------------------------
+# [3.Tool/serial](3.Tool/serial)
+## Linux 串口收发测试工具（serial_rxtx_test.c）
+**概述**
+1. 支持串口收发
+2. 支持 modbus 校验
+
+**使用**
+1. 编译： gcc serial_rxtx_test.c -lrt -lpthread -o serial_rxtx_test
+2. 运行： ./serial_rxtx_test -h
+```
+[root@localhost serial]# ./serial_rxtx_test -h
+
+Usage: ./serial_rxtx_test [OPTION]...
+	-t Device Identifier [default /dev/ttyS0]
+	-b Baud int [default 115200]
+	-d Data Bits int [default 8]
+	-p Parity  char [default N]
+	-s Stop Bits int [default 1]
+	-m 1: Use CRC16, 0: No CRC16 [default 0]
+	-h Show this message
+
+```
+
+![](/3.Tool/serial/serial_rxtx_demo.png)
+
+
+## CRC16校验计算工具（modbus-crc16.cpp）
+## 其他工具
+1. 串口设备 从站地址 扫描
+2. 传感器 数据报文 模拟
+3. 批量测试
+
+---------------------------
+# [3.Tool/shell_script](3.Tool/shell_script)
+## Shell脚本常用函数封装
+
+``` shell
+[root@localhost shell_script]# ./zh_shell_function.sh -d
+get_last_word: orange
+This is red text
+This is blue text
+This is green text
+This is yellow text
+This is cyan text
+This is purple text
+This is white text
+
+[root@localhost shell_script]# ./zh_shell_function.sh -h
+Usage: ./zh_shell_function.sh [-h] [-c core] [-o opt]
+Options:
+  -h, --help      Display help message
+  -d, --demo      Display help message
+  -c core         core: target platform architecture
+  -o opt          opt: [debug | clean | pack]
+[root@localhost shell_script]# 
+```
+
+
+
 ---------------------------
 # [3.Tool/shell_script/code_generator](3.Tool/shell_script/code_generator)
 ## 代码生成器
@@ -205,89 +326,6 @@ for (int i = E_ID; i < E_SIZE; ++i) {
 -->
 
 
-
----------------------------
-# [4.Test/test_FOCAS/fwlib](4.Test/test_FOCAS/fwlib)
-# Fanuc FOCAS Library
-[![Docker Hub](https://img.shields.io/docker/v/strangesast/fwlib?sort=date)](https://hub.docker.com/r/strangesast/fwlib)  
-Header and runtime files for CNC communication  
-
-# Docker
-Build the base image with `docker build .`  
-
-Build an example with `docker build examples/c/Dockerfile`   
-
-# `examples/`  
-Link or rename appropriate `libfwlib\*.so` (based on platform) to `libfwlib32.so.1` and `libfwlib32.so` 
-
-On linux x86\_64 for example: `ln -s libfwlib32-linux-x64.so.1.0.5 libfwlib32.so` 
-
-More instructions in each example folder
-
----------------------------
-# [4.Test/test_FOCAS/fwlib/examples/c-minimal](4.Test/test_FOCAS/fwlib/examples/c-minimal)
-# Instructions
-
-## Linux
-From the root of this repository:  
-```
-gcc -L./ -Wl,-rpath . examples/c-minimal/main.c -lfwlib32 -lm -lpthread -o fanuc_minimal
-./fanuc_minimal
-```
-
-## Windows
-Requires Visual Studio or [Visual Studio Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019)  
-From the root of this repository:  
-```
-cl.exe /Fe"fanuc_minimal.exe" .\examples\c-minimal\main.c /link .\Fwlib32.lib
-.\fanuc_minimal.exe
-```
-
----------------------------
-# [4.Test/test_FOCAS/fwlib/examples/c](4.Test/test_FOCAS/fwlib/examples/c)
-# Fanuc fwlib example
-![CMake](https://github.com/strangesast/fwlib/workflows/CMake/badge.svg)
-![Windows CMake](https://github.com/strangesast/fwlib/workflows/Windows%20CMake/badge.svg)  
-An example that connects to a machine specified by configuration options (file / env / arg)  
-Usage (all args are optional):  
-```
-./bin/fanuc_example --config=<path_to_config> --port=<device port> --ip=<device ip>
-```
-
-**Notice:** This example requires fetching submodules first (`git submodule update --init --recursive`)  
-
-# Docker (Linux containers)
-From the root of this repository:
-```
-docker build -t fwlib_c-example -f examples/c/Dockerfile .
-docker run --rm --network=host -it fwlib_c-example
-```
-
-# Linux
-1. Copy `libfwlib32-linux-$arch.so.$version` to `/usr/local/lib` then run `ldconfig`.  Install config with `apt install libconfig-dev` or compile manually.  
-2. `mkdir build && cd build`  
-3. `cmake ..`  
-4. `cmake --build .`  
-5. `ctest -V`  
-
-# Windows
-1. Compile libconfig in `extern/libconfig/build` with `cmake -A Win32 ..` and `cmake --build . --config Release`  
-2. `cmake -E make_directory build`  
-3. `cd build`  
-4. `cmake -A Win32 ..`  
-5. `cmake --build .`  
-6. `.\bin\fanuc_example.exe` (Fwlib32.dll may need to be moved to cwd)  
-
-# Development / Debug
-Copy `compile_commands.json` from build dir to use with IDE  
-
----------------------------
-# [4.Test/test_FOCAS/fwlib/examples/go](4.Test/test_FOCAS/fwlib/examples/go)
-# Usage
-
-0. Install go
-1. `go build -o fwlib_example .`
-2. `./fwlib_example`
 
 ---------------------------
 # [.Document](.Document)

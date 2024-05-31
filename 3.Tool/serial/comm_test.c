@@ -163,7 +163,7 @@ static void printf_array(char *str, uint8_t *buffer, uint32_t sz)
     {
         fprintf(stdout, "%02X", buffer[i]);
     }
-    // fprintf(stdout, "\n");
+    fprintf(stdout, "\n");
     fflush(stdout);
 }
 
@@ -181,7 +181,7 @@ static void printf_hex(char *str, uint8_t *buffer, uint32_t sz)
     {
         fprintf(stdout, "%02X", buffer[i]);
     }
-    // fprintf(stdout, "\n");
+    fprintf(stdout, "\n");
     fflush(stdout);
 }
 

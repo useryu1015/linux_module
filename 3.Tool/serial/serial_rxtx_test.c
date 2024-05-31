@@ -1,3 +1,15 @@
+/**
+ * @file serial_rxtx_test.c
+ * @brief 
+ * @make：
+ *      gcc serial_rxtx_test.c -lrt -lpthread -o serial_rxtx_test 
+ * @version 0.1
+ * @date 2024-05-30
+ * 
+ * @copyright Copyright (c) 2024
+ * @todo
+ *  1. 16进制收发/ascii收发 模式可选
+ */
 #include <stdio.h>
 #include <stdint.h>
 #include <fcntl.h>
@@ -12,18 +24,14 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <string.h>
 
-static int running = true;
+union _format_crc{
+	unsigned short crc;	
+	unsigned char data[2];
+} format_crc;
 
-/*
- * 表计功能码0x66规约的固定头部*/
-typedef struct _md66_head_t
-{
-    uint8_t addr; // 地址域
-    uint8_t ex66; // modbus扩展固定功能码
-    uint8_t len;  // 数据帧长度
-} __attribute__((packed)) md66_head_t;
-
+/***************************    CRC    ******************************/
 /* Table of CRC values for high-order byte */
 static const uint8_t table_crc_hi[] = {                                                                   //
     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80,                                     //
@@ -61,15 +69,15 @@ static const uint8_t table_crc_lo[] = {                                         
     0x5E, 0x5A, 0x9A, 0x9B, 0x5B, 0x99, 0x59, 0x58, 0x98, 0x88, 0x48, 0x49, 0x89, 0x4B, 0x8B, 0x8A, 0x4A, //
     0x4E, 0x8E, 0x8F, 0x4F, 0x8D, 0x4D, 0x4C, 0x8C, 0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, //
     0x42, 0x43, 0x83, 0x41, 0x81, 0x80, 0x40};
-uint16_t crc16(uint8_t *buffer, uint16_t buffer_length)
+
+static uint16_t crc16(uint8_t *buffer, uint16_t buffer_length)			// 查表法
 {
     uint8_t crc_hi = 0xFF; /* high CRC byte initialized */
     uint8_t crc_lo = 0xFF; /* low CRC byte initialized */
-    unsigned int i;        /* will index into CRC lookup */
+    unsigned int i; /* will index into CRC lookup */
 
     /* pass through message buffer */
-    while (buffer_length--)
-    {
+    while (buffer_length--) {
         i = crc_hi ^ *buffer++; /* calculate the CRC  */
         crc_hi = crc_lo ^ table_crc_hi[i];
         crc_lo = table_crc_lo[i];
@@ -116,8 +124,7 @@ static int open_serial(char *identifier, int baud, int data_bits, int stop_bits,
     speed_t speed;
     char devname[40];
 
-    printf("open_serial identifier:%s baud:%d data_bits:%d stop_bits:%d parity:%c\n", identifier, baud, data_bits, stop_bits, parity);
-
+    printf("open serial identifier:%s baud:%d data_bits:%d stop_bits:%d parity:%c\n", identifier, baud, data_bits, stop_bits, parity);
     sprintf(devname, "%s", identifier);
     fd = open(devname, O_RDWR | O_NOCTTY | O_NDELAY | O_EXCL);
     if (fd <= 0)
@@ -213,6 +220,95 @@ static int open_serial(char *identifier, int baud, int data_bits, int stop_bits,
     return fd;
 }
 
+/***************************    OPT    ******************************/
+static int optval, baud = 115200;
+static int data_bits = 8;
+static int stop_bits = 1;
+static int mode = 0;
+static char parity = 'N';
+static char dev[256] = {"/dev/ttyS0"};
+
+void Usage(char *cmd)
+{
+    printf("\nUsage: %s [OPTION]...\n", cmd);
+    printf("\t-t Device Identifier [default /dev/ttyS0]\n");
+    printf("\t-b Baud int [default 115200]\n");
+    printf("\t-d Data Bits int [default 8]\n");
+    printf("\t-p Parity  char [default N]\n");
+    printf("\t-s Stop Bits int [default 1]\n");
+    printf("\t-m 1: Use CRC16, 0: No CRC16 [default 0]\n");
+    printf("\t-h Show this message\n\n");
+    exit(0);
+}
+
+void opt_parse(int argc, char *argv[])
+{
+    while ((optval = getopt(argc, argv, ":t:b:d:p:s:h:m:")) != -1)
+    {
+        switch (optval)
+        {
+        case 't':
+            snprintf(dev, sizeof(dev), "%s", optarg);
+            break;
+        case 'b':
+            sscanf(optarg, "%d", &baud);
+            break;
+        case 'd':
+            sscanf(optarg, "%d", &data_bits);
+            break;
+        case 'p':
+            parity = *optarg;
+            break;
+        case 's':
+            sscanf(optarg, "%d", &stop_bits);
+            break;
+        case 'm':
+            sscanf(optarg, "%d", &mode);
+            break;
+        default:
+            Usage(argv[0]);
+            break;
+        }
+    }
+}
+
+/***************************    Main API    ******************************/
+static int running = true;
+static int g_serial_fd = -1;
+
+
+/*
+ * change "E60701" to hex: 0xE60701
+ */
+int string_to_hex(char *buf, char *val)
+{
+	int i = 0;
+	int num;
+	
+	// printf(" datalen: %d \n", strlen(buf)/2);
+	// printf(" str buf: %s \n", buf);
+	
+	for(; i<strlen(buf)/2; i++){
+		sscanf(buf+i*2, "%2x", val+i);
+		// printf(" %02X", *((char*)(val+i)));
+	}
+	// printf("\n");
+
+	return strlen(buf)/2;
+}
+
+void cut_space(char* Res, char* Dec)
+{
+	//int i = 0;
+	for (; *Res != '\0'; Res++) {
+		if (*Res != ' ')
+			*Dec++ = *Res;//'++' 优先级比 '*'高，但是这里'++'作为后缀，先进行*Dec，再自加
+	}
+
+	*Dec = '\0';
+	return;
+}
+
 static void printf_array(char *str, uint8_t *buffer, uint32_t sz)
 {
     uint32_t i = 0;
@@ -231,7 +327,7 @@ static void printf_array(char *str, uint8_t *buffer, uint32_t sz)
     fflush(stdout);
 }
 
-static int serial_send(int fd, const void *ptr, int size)
+static int serial_txd(int fd, void *ptr, int size)
 {
     int ret;
     char *ps, *pe;
@@ -245,67 +341,12 @@ static int serial_send(int fd, const void *ptr, int size)
 
         ps += ret;
     }
-    printf_array("\tTX:", ptr, (ps - (char *)ptr));
+
+    printf_array("\033[32mTX:\033[0m", ptr, (ps - (char *)ptr));
     return ps - (char *)ptr;
 }
 
-static int serial_recv(int fd, void *ptr, int size, int slave)
-{
-    int s_rc, ret, head = false;
-    char *ps = ptr;
-    md66_head_t *phead = ptr;
-
-    if (size < sizeof(md66_head_t))
-    {
-        return -1;
-    }
-
-    char *pe = ps + sizeof(md66_head_t);
-    while (ps < pe)
-    {
-        fd_set rfds;
-        struct timeval tv;
-        FD_ZERO(&rfds);
-        FD_SET(fd, &rfds);
-
-        tv.tv_sec = 1;
-        tv.tv_usec = 1000 * 200;
-
-        s_rc = select(fd + 1, &rfds, NULL, NULL, &tv);
-        if (s_rc > 0)
-        {
-            ret = read(fd, ps, pe - ps);
-            if (ret <= 0)
-            {
-                return ret;
-            }
-            ps += ret;
-
-            if (!head &&
-                phead->addr == slave &&
-                phead->ex66 == 0x66)
-            {
-                printf("slave_id %d is success\n", slave);
-                head = true;
-                pe = ps + phead->len + 2;
-            }
-        }
-        else if (s_rc == 0)
-        {
-            // printf("id %d timeout\n",slave);
-            return -2;
-        }
-        else
-        {
-            printf("select error\n");
-            return -3;
-        }
-    }
-    printf_array("serial_recv:", ptr, ps - (char *)ptr);
-    return ret;
-}
-
-static int serial_rxd(int fd, void *ptr, int size, int timeout)
+static int serial_rxd(int fd, char *ptr, int size, int timeout)
 {
     time_t t;
     int ret, s_rc;
@@ -325,139 +366,87 @@ static int serial_rxd(int fd, void *ptr, int size, int timeout)
         if (ret > 0)
         {
             time(&t);
+            printf("\n");
             printf("\033[31m%s\033[0m", ctime(&t));
             printf_array("\033[31mRX:\033[0m", ptr, ret);
-            printf("string: %s", ptr);
-            memset(ptr,0,8);
+            // printf("string: %s", ptr);
+            // memset(ptr,0,8);
         }
     }
 
     return ret;
 }
 
-int str_to_hex(char *hexstr, char *ssal, int *len)
+void *run_serial_rxd_thread(void *args)
 {
-    int i;
-    char temp[8] = {0};
-
-    // for (i = 0; (i < strlen(hexstr) / 2) && (i < *len); i++)
-    for (i = 0; (i < strlen(hexstr) / 2) && *hexstr; i++)
-    {
-        temp[0] = hexstr[i * 2];
-        temp[1] = hexstr[i * 2 + 1];
-        sscanf(temp, "%02x", &ssal[i]);
-    }
-    *len = i;
-
-    // printf_array("HEX:", ssal, i);
-    return 0;
-}
-
-void Usage(char *cmd)
-{
-    printf("\nUsage: %s [OPTION]...\n", cmd);
-    printf("\t-t Device Identifier [default /dev/ttyS0]\n");
-    printf("\t-b Baud int [default 115200]\n");
-    printf("\t-d Data Bits int [default 8]\n");
-    printf("\t-p Parity  char [default N]\n");
-    printf("\t-s Stop Bits int [default 1]\n");
-    printf("\t-h Show this message\n\n");
-    exit(0);
-}
-
-/*信号处理*/
-static void signal_handler(int signo)
-{
-    running = false;
-    // printf("hello \n");
-    return;
-}
-
-
-void *run_serial_rxd(void *args)
-{
-    int fd = *((int*)args);
-    char * rbuf[65536];
+    char rbuf[65536];
 
     while (running)
     {
-        serial_rxd(fd, rbuf, sizeof(rbuf), 500);
+        serial_rxd(g_serial_fd, rbuf, sizeof(rbuf), 500);
     }
 }
 
+
 int main(int argc, char *argv[])
 {
-    char *ps = NULL, sbuf[2048] = {0}, rbuf[2048] = {0};
-    int b, i, ret, slen = sizeof(sbuf);
-    char dev[256] = {"/dev/ttyS0"};
-    int fd, optval, baud = 115200;
-    int data_bits = 8;
-    int stop_bits = 1;
-    uint16_t md66_oi = 2001;
-    char parity = 'N';
-    md66_head_t mhead;
     pthread_t tid;
+    uint8_t sbuf[2048] = {0};
+    uint8_t input[2048] = {0};
+    int b, i, ret, slen = sizeof(sbuf);
 
-    // signal(SIGPIPE, SIG_IGN);
-    // signal(SIGINT, signal_handler);  /* ctrl^c */
-    // signal(SIGQUIT, signal_handler); /* ctrl^\ */
-    // signal(SIGTERM, signal_handler); /* kill/killall */
+    opt_parse(argc, argv);
 
-    while ((optval = getopt(argc, argv, ":t:b:d:p:s:h:o")) != -1)
-    {
-        switch (optval)
-        {
-        case 't':
-            snprintf(dev, sizeof(dev), "%s", optarg);
-            break;
-        case 'b':
-            sscanf(optarg, "%d", &baud);
-            break;
-        case 'd':
-            sscanf(optarg, "%d", &data_bits);
-            break;
-        case 'p':
-            parity = *optarg;
-            break;
-        case 's':
-            sscanf(optarg, "%d", &stop_bits);
-            break;
-        case 'o':
-            sscanf(optarg, "%d", &md66_oi);
-            break;
-        default:
-            Usage(argv[0]);
-            break;
-        }
-    }
-    int baud_arry[] = {4800, 9600, 19200, 38400, 57600, 115200};
-
-    fd = open_serial(dev, baud, data_bits, stop_bits, parity);
-    if (fd <= 0)
+    /* init serial */
+    g_serial_fd = open_serial(dev, baud, data_bits, stop_bits, parity);
+    if (g_serial_fd <= 0)
     {
         printf("open serial faild\n");
         exit(0);
     }
 
-    /**
-     * begin
-    */
+    /* init serial recv thread */
+    tcflush(g_serial_fd, TCIOFLUSH);
+    pthread_create(&tid, NULL, run_serial_rxd_thread, NULL);
 
-    tcflush(fd, TCIOFLUSH);
-    pthread_create(&tid, NULL, run_serial_rxd, &fd);
 
-    while (running)
-    {
-        printf("CMD Enter Send Hex Str:");
-        slen = fgets(rbuf, 200, stdin);
-        printf("\tSTR:%s", rbuf);
+    /* main loop */
+    printf("\nEnter message to be send (q = quit): \n");
+	while (input[0] != 'q')
+	{
+        usleep(300 *1000);
 
-        str_to_hex(rbuf, sbuf, &slen);              // fix: 空格删除？？ modbus校验程序？？？    找找以前写的。
-        serial_send(fd, sbuf, slen);
-        // memset(rbuf, 0, sizeof(rbuf));
+        // printf("\nEnter message to be send (q = quit): ");
+        if (fgets(input, sizeof(input), stdin) != NULL) {
+            // printf("STR:%s", input);
+            cut_space(input, sbuf);
+
+            slen = string_to_hex(sbuf, input);
+
+            /* 添加校验位 */
+            if (mode == 1) {
+		        uint16_t crc_buf = crc16((uint8_t*)input, slen);		// 计算校验值
+
+                format_crc.crc = crc_buf;
+                printf("crc is: %.2X %.2X \n", format_crc.data[0], format_crc.data[1]);
+
+                uint8_t *ps = input + slen;
+                *(ps++) = format_crc.data[1];
+                *(ps++) = format_crc.data[0];
+                *ps = '\0';
+                slen += 2;
+            }
+
+            /* 打印发送报文 */
+	        for (i = 0; i < slen; i++)
+	            printf("<%.2X>", ((uint8_t*)input)[i]);
+            printf(" to be sent.\n");
+
+            serial_txd(g_serial_fd, input, slen);
+        }
     }
 
     pthread_join(tid, NULL);
-    close(fd);
+    close(g_serial_fd);
     return 0;
 }

@@ -286,4 +286,4 @@ fi
 
 
 # print_func_usage
-color_echo GREEN "Output to file: ${code_file}"
+zecho GRE "Output to file: ${code_file}"

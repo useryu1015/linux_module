@@ -76,20 +76,25 @@ show_usage()
     echo "Usage: $0 [-h] [-c core] [-o opt]"
     echo "Options:"
     echo "  -h, --help      Display help message"
+    echo "  -d, --demo      Display help message"
     echo "  -c core         core: target platform architecture"
     echo "  -o opt          opt: [debug | clean | pack]"
 
     exit 0
 }
 
+
 process_options()
 {
         # 解析命令行参数
-        while getopts ":hc:o:-:" opt; do
+        while getopts ":dhc:o:-:" opt; do
         case $opt in
             h)
                 show_usage                
                 ;;
+            d)
+                print_func_usage           
+                ;;                
             c)
                 # 处理 -c 选项的参数
                 CORE_APP="$OPTARG"
@@ -103,6 +108,10 @@ process_options()
                     help)
                         # 处理 --help 选项
                         show_usage
+                    ;;
+                    demo)
+                        # 处理 --help 选项
+                        print_func_usage                        
                     ;;
                     *)
                         # 其他选项
@@ -122,52 +131,50 @@ process_options()
         esac
     done
 
-    # exit 0
 }
 
+zecho() {
+    local color_code
+    case "$1" in
+        "RED") color_code="31";;    # 红色
+        "BLU") color_code="34";;    # 蓝色
+        "GRE") color_code="32";;    # 绿色
+        "YEL") color_code="33";;    # 黄色
+        "CYA") color_code="36";;    # 青色
+        "PUR") color_code="35";;    # 紫色
+        "WHI") color_code="37";;    # 白色
+        *) color_code="0";;  # 默认为 0，即无颜色
+    esac
+    echo -e "\033[0;${color_code}m$2\033[0m"
+}
 
+zecho_red(){
+    zecho "RED" "$1" 
+}
 
-# 关联数组用于存储颜色值和对应的 ANSI 转义序列
-declare -A colors=(
-    [RED]='\033[0;31m'
-    [GREEN]='\033[0;32m'
-    [YELLOW]='\033[0;33m'
-    [BLUE]='\033[0;34m'
-    [MAGENTA]='\033[0;35m'
-    [CYAN]='\033[0;36m'
-    [WHITE]='\033[0;37m'
-)
+zecho_blue() {
+    zecho "BLU" "$1"
+}
 
-# 封装函数，接收颜色和消息参数，输出带有指定颜色的文本
-# 参数: $1 颜色，$2 输出内容
-color_echo() {
-    local color="$1"
-    local message="$2"
-    NC='\033[0m'            # 重置颜色代码
-
-    if [ -z "${colors[$color]}" ]; then
-        echo "$message"     # 如果颜色不存在，默认输出文本内容
-    else
-        echo -e "${colors[$color]}${message}${NC}"  # 输出指定颜色的文本内容
-    fi
+zecho_green() {
+    zecho "GRE" "$1"
 }
 
 
 #           使用介绍            #
 print_func_usage() {
-    # get_last_word()
+    # get_last_word()   特殊字符截取
     last_word=$(get_last_word ',' 'apple,banana,orange') 
     echo get_last_word: $last_word
 
-    # 使用函数输出不同颜色的文本
-    color_echo "RED" "Error message"
-    color_echo "GREEN" "Success message"
-    color_echo "YELLOW" "Warning message"
-    color_echo "BLUE" "Info message"
-    color_echo "MAGENTA" "Magenta message"
-    color_echo "CYAN" "Cyan message"
-    color_echo "WHITE" "White message"
-
+    # zecho()   使用函数输出不同颜色的文本
+    zecho "RED" "This is red text"
+    zecho "BLU" "This is blue text"
+    zecho "GRE" "This is green text"
+    zecho "YEL" "This is yellow text"
+    zecho "CYA" "This is cyan text"
+    zecho "PUR" "This is purple text"
+    zecho "WHI" "This is white text"
 }
 
-# print_func_usage
+process_options "$@"zh_shell_function.sh
