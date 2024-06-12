@@ -23,6 +23,10 @@ Usage: ./serial_rxtx_test [OPTION]...
 ![](/3.Tool/serial/serial_rxtx_demo.png)
 
 
+**Linux虚拟串口工具**
+1. 安装 socat 工具： yum install socat / apt-get update; sudo apt-get install socat
+2. 使用 socat 创建一对虚拟串口：socat -d -d pty,raw,echo=0 pty,raw,echo=0
+
 ## CRC16校验计算工具（modbus-crc16.cpp）
 ## 其他工具
 1. 串口设备 从站地址 扫描
