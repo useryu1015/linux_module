@@ -40,5 +40,11 @@ void main(void)
         zwdog_sche(0);          // 遛狗
         sleep(1);
     }
+
+    zwdog_free();
 }
 ```
+
+**优化**
+* 参考 pthread_t 设计句柄，直接访监控对象数据堆栈，减少CPU开销；（或两者兼容）
+

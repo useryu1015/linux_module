@@ -130,6 +130,11 @@ void main(void)
     }
 }
 ```
+
+**优化**
+* 参考 pthread_t 设计句柄，直接访监控对象数据堆栈，减少CPU开销；（或两者兼容）
+
+
 ---------------------------
 # [3.Tool/compile_envir](3.Tool/compile_envir)
 ## 自动化编译与打包工具

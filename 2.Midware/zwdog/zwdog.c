@@ -4,7 +4,6 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include "zwdog.h"
 
 static volatile int         fd_pointer = 1;             /* fd 索引 */
@@ -14,11 +13,14 @@ static pthread_mutex_t      fd_init_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 /* cpu 时钟源 */
-static uint64_t get_cpu_time_ms()
+static inline uint64_t get_cpu_time_ms()
 {
     struct timespec current_time;
-    clock_gettime(CLOCK_MONOTONIC, &current_time);
-    return (uint64_t)(current_time.tv_sec) * 1000 + (uint64_t)(current_time.tv_nsec / 1000000);
+    if (clock_gettime(CLOCK_MONOTONIC, &current_time) == -1) {
+        perror("clock_gettime");
+        return 0;
+    }
+    return (uint64_t)current_time.tv_sec * 1000 + (current_time.tv_nsec / 1000000);
 }
 
 /* 获取 fd 的数据结构 */
@@ -47,6 +49,20 @@ static void zwdog_default_cback(int fd)
 
     // system("echo ");         /* 写入文件 /tmp/pid.xx */
     exit(-1);
+}
+
+void zwdog_free() {
+    zwdog_list_t *current = pdog_head;
+    zwdog_list_t *next;
+
+    while (current != NULL) {
+        next = current->next;
+        // 销毁互斥锁
+        pthread_mutex_destroy(&current->fdog_mutex);
+        // 释放当前节点
+        free(current);
+        current = next;
+    }
 }
 
 /**
@@ -183,5 +199,7 @@ void main(void)
         zwdog_sche(0);          // 遛狗
         sleep(1);
     }
+
+    zwdog_free();
 }
 #endif
