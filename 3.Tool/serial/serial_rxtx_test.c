@@ -411,7 +411,7 @@ int main(int argc, char *argv[])
 
 
     /* main loop */
-    printf("\nEnter message to be send (q = quit): \n");
+    printf("\nEnter message to be send: \n");
 	while (input[0] != 'q')
 	{
         usleep(300 *1000);

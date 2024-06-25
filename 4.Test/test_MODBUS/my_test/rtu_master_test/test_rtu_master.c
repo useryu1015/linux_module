@@ -41,8 +41,9 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    modbus_set_slave(mb, 1);                            // 2. //设置从机地址，成功返回0, 否则返回-1
-    ret = modbus_connect(mb);                           // 3. //连接Modbus主机，成功返回0, 否则返回-1
+	// modbus_set_debug(mb, TRUE);
+    modbus_set_slave(mb, 1);                                // 设置从机地址，成功返回0, 否则返回-1
+    ret = modbus_connect(mb);                               // 连接Modbus主机，成功返回0, 否则返回-1
     
     if(ret == -1)
     {

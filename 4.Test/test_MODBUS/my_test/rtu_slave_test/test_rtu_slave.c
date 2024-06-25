@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
 
 	//设置调试模式      即打印modbus收发报文
-//	modbus_set_debug(mb, TRUE);
+	// modbus_set_debug(mb, TRUE);
 
 
     modbus_set_slave(mb, device);           // 设置从设备地址
